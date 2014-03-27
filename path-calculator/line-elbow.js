@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.lineElbow = function(){
+crossPlatformShapes.pathCalculator.lineElbow = function(){
   'use strict';
 
   //for generating line segments through a path of points (pathpoints, not waypoints)

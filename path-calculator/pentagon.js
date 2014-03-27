@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.pentagon = function(){
+crossPlatformShapes.pathCalculator.pentagon = function(){
   'use strict';
 
   function getAttributes(data) {

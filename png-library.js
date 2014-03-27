@@ -4,5 +4,8 @@ crossPlatformShapes.pngLibrary = {
   },
   brace:{
     href: 'http://www.example.org/brace.png'
+  },
+  rectangle:{
+    href: 'http://www.example.org/rectangle.png'
   }
 };

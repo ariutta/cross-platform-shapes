@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.ovalDouble = function(){
+crossPlatformShapes.pathCalculator.ovalDouble = function(){
   'use strict';
 
   function getAttributes(data) {
@@ -9,8 +9,8 @@ pathvisiojs.view.pathwayDiagram.svg.path.ovalDouble = function(){
       doubleLineGap = 2 * data.strokeWidth || 6;
     var cx = x + width/2;
     var cy = y + height/2;
-    var outerEllipse = pathvisiojs.view.pathwayDiagram.svg.path.oval.drawEllipse(cx, cy, width, height);
-    var innerEllipse = pathvisiojs.view.pathwayDiagram.svg.path.oval.drawEllipse(cx, cy, width - 2*doubleLineGap, height - 2*doubleLineGap);
+    var outerEllipse = crossPlatformShapes.pathCalculator.oval.drawEllipse(cx, cy, width, height);
+    var innerEllipse = crossPlatformShapes.pathCalculator.oval.drawEllipse(cx, cy, width - 2*doubleLineGap, height - 2*doubleLineGap);
 
     /*
 m74.23027,549.04834

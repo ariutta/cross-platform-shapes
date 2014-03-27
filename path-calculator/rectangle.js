@@ -1,28 +1,16 @@
-pathvisiojs.view.pathwayDiagram.svg.path.rectangle = function(){
+crossPlatformShapes.pathCalculator.rectangle = function(data){
   'use strict';
 
-  function getAttributes(data) {
-    var x = data.x,
-      y = data.y,
-      width = data.width,
-      height = data.height;
+  var x = data.x,
+    y = data.y,
+    width = data.width,
+    height = data.height;
 
-    var path = 'M ' + x + ' ' + y +
-      'L' + (x + width) + ' ' + y +
-      'L' + (x + width) + ' ' + (y + height) +
-      'L' + (x) + ' ' + (y + height) +
-      'Z';
+  var pathData = [{command: 'moveTo', points: [x, y]},
+    {command: 'lineTo', points: [(x + width), y]},
+    {command: 'lineTo', points: [(x + width), (y + height)]},
+    {command: 'lineTo', points: [(x), (y + height)]},
+    {command: 'closePath', points: []}];
 
-    var attributes = [
-      {
-        name:'d',
-        value: path
-      }
-    ];
-    return attributes;
-  }
-
-  return {
-    getAttributes:getAttributes
-  };
-}();
+  return pathData;
+};

@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.complex = function(){
+crossPlatformShapes.pathCalculator.complex = function(){
   'use strict';
 
   function getAttributes(data) {

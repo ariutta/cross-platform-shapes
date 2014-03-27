@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.gridSquare = function(){
+crossPlatformShapes.pathCalculator.gridSquare = function(){
   'use strict';
 
   function getAttributes(data) {

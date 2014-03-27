@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.none = function(){
+crossPlatformShapes.pathCalculator.none = function(){
   'use strict';
 
   function getAttributes(data) {

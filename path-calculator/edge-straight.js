@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.edgeStraight = function(){
+crossPlatformShapes.pathCalculator.edgeStraight = function(){
   'use strict';
 
   function getAttributes(data) {

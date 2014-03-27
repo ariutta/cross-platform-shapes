@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.hexagon = function(){
+crossPlatformShapes.pathCalculator.hexagon = function(){
   'use strict';
 
   function getAttributes(data) {

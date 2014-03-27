@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.mimDegradation = function(){
+crossPlatformShapes.pathCalculator.mimDegradation = function(){
   'use strict';
 
   function getAttributes(data) {

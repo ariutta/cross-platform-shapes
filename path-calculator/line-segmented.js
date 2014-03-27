@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.lineSegmented = function(){
+crossPlatformShapes.pathCalculator.lineSegmented = function(){
   'use strict';
 
   //for generating line segments through a path of points (pathpoints, not waypoints)

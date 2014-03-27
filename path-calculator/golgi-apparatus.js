@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.golgiApparatus = function(){
+crossPlatformShapes.pathCalculator.golgiApparatus = function(){
   'use strict';
 
   function getAttributes(data) {

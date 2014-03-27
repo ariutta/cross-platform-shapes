@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.roundedRectangle = function(){
+crossPlatformShapes.pathCalculator.roundedRectangle = function(){
   'use strict';
 
   function getAttributes(data) {

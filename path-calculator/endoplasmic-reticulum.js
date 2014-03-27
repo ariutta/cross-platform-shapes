@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.endoplasmicReticulum = function(){
+crossPlatformShapes.pathCalculator.endoplasmicReticulum = function(){
   'use strict';
 
   function getAttributes(data) {

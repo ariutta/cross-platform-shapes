@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.roundedRectangleDouble = function(){
+crossPlatformShapes.pathCalculator.roundedRectangleDouble = function(){
   'use strict';
 
   function drawRoundedRectangle(x, y, width, height) {

@@ -1,22 +1,25 @@
-crossPlatformShapes.svg = {
-  arc: function(data){
-    return this.path.arc(data);
-  },
-  brace: function(data){
-    return this.path.brace(data);
-  },
+crossPlatformShapes.svg = function(){
+  var arc = function(data){
+    return this.path.render('arc', data);
+  };
+  var brace = function(data){
+    return this.path.render('brace', data);
+  };
+  var rectangle = function(data){
+    return this.path.render('rectangle', data);
+  };
 
-  render: function(parent, data) {
+  var render = function(parent, data) {
     var re, shapeNameFormatted;
     if (!!data.shape) {
       shapeNameFormatted = strcase.camelCase(data.shape);
-      if (!pathvisiojs.view.pathwayDiagram.svg.path.hasOwnProperty(shapeNameFormatted)) {
+      if (!crossPlatformShapes.pathCalculator.hasOwnProperty(shapeNameFormatted)) {
         // if pathvisiojs cannot render the shape name indicated, check for whether the shape name a double-line shape.
         // If so, check whether pathvisiojs can render a single-line version of the shape.
         // If yes, render the single-line version. Otherwise, render a rounded rectangle.
         re = /double$/gi;
         shapeNameFormatted = shapeNameFormatted.replace(re, '');
-        if (pathvisiojs.view.pathwayDiagram.svg.path.hasOwnProperty(shapeNameFormatted)) {
+        if (crossPlatformShapes.pathCalculator.hasOwnProperty(shapeNameFormatted)) {
           console.warn('Requested path "' + data.shape + '" is not available with linetype of "Double". Using linetype of "Solid" instead');
         }
         else {
@@ -100,10 +103,16 @@ crossPlatformShapes.svg = {
       // These attributes apply only to the specific pathShape indicated by "shapeNameFormatted".
       // At time of writing (2014-03-20), the only attribute specified for any shape is the "d" attribute (path data),
       // but pathvisiojs is capable of rendering other attributes if they were to be specified.
-      var specificAttributes = pathvisiojs.view.pathwayDiagram.svg.path[shapeNameFormatted].getAttributes(data);
+      var specificAttributes = crossPlatformShapes.pathCalculator[shapeNameFormatted].getAttributes(data);
       specificAttributes.forEach(function(attribute) {
         path.attr(attribute.name, attribute.value);
       });
     }
-  }
-};
+  };
+
+  return {
+    arc:arc,
+    brace:brace,
+    rectangle:rectangle
+  };
+}();

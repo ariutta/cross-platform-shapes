@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.triangle = function(){
+crossPlatformShapes.pathCalculator.triangle = function(){
   'use strict';
 
   function getAttributes(data) {

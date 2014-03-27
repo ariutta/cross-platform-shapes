@@ -1,4 +1,4 @@
-pathvisiojs.view.pathwayDiagram.svg.path.oval = function(){
+crossPlatformShapes.pathCalculator.oval = function(){
   'use strict';
 
   // TODO don't repeat this with the def in ovalDouble

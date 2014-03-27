@@ -1,5 +1,5 @@
 // TODO this is currently just a renamed copy of lineStraight
-pathvisiojs.view.pathwayDiagram.svg.path.lineCurved = function(){
+crossPlatformShapes.pathCalculator.lineCurved = function(){
   'use strict';
 
   //for generating bezier curves through a path of points (pathpoints, not waypoints)
