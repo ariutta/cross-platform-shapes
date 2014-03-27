@@ -18,7 +18,7 @@ crossPlatformShapes.svg.path = {
 
     var result = {};
     var attributes = [];
-    result.elementName = 'svg';
+    result.elementName = 'path';
     var pathSegments = crossPlatformShapes.pathCalculator[ shapeName ](data);
     var d = '';
     // the path segments are defined using the Canvas path command terms. The path commands used are only those
@@ -31,6 +31,11 @@ crossPlatformShapes.svg.path = {
 
     var color = data.color;
     attributes.push({name: 'stroke', value: color});
+
+    var backgroundColor = data.backgroundColor;
+    if (!!backgroundColor) {
+      attributes.push({name: 'fill', value: backgroundColor});
+    }
 
     var markerStart = data.markerStart;
     if (!!markerStart) {
@@ -65,9 +70,10 @@ d3.select('svg').select('#viewport').append('path').attr('d', 'M0,0L50,100').att
 
     var rotation = data.rotation;
     if (!!rotation) {
-      attributes.push({name: 'transform', value: 'rotate(' + rotation + ')'});
+      attributes.push({name: 'transform', value: 'rotate(' + rotation + ',' + (data.x + data.width/2) + ',' + (data.y + data.height/2) + ')'});
     }
     result.attributes = attributes;
+    self.myResult = result;
     return result;
   },
 
@@ -100,7 +106,7 @@ d3.select('svg').select('#viewport').append('path').attr('d', 'M0,0L50,100').att
     var markerData = {
       arrow: {
         markerElement: {
-          viewBox:"0 0 12 12",
+          viewBox:'0 0 12 12',
           markerWidth:12,
           markerHeight:12
         },
@@ -109,7 +115,8 @@ d3.select('svg').select('#viewport').append('path').attr('d', 'M0,0L50,100').att
           y:0,
           width:12,
           height:12,
-          color:color
+          color:color,
+          backgroundColor:color
         }
       }
     };
@@ -121,13 +128,10 @@ d3.select('svg').select('#viewport').append('path').attr('d', 'M0,0L50,100').att
 
     if (!markerSelection[0][0]) {
       var markerShapeAttributes = svgPathGenerator.prepareForRendering(name, markerData[name].shapeElement);
-      console.log('markerShapeAttributes');
-      console.log(markerShapeAttributes);
       markerSelection = svgSelection.select('defs').append('marker')
       .attr('id', markerId)
       .attr('markerUnits', 'strokeWidth')
       .attr('orient', 'auto')
-      //.attr('stroke', color)
       .attr('viewBox', markerData[name].markerElement.viewBox)
       .attr('markerWidth', markerData[name].markerElement.markerWidth)
       .attr('markerHeight', markerData[name].markerElement.markerHeight)
@@ -142,16 +146,13 @@ d3.select('svg').select('#viewport').append('path').attr('d', 'M0,0L50,100').att
       .attr('refY', markerData[name].markerElement.markerHeight / 2)
       .attr('preserveAspectRatio', 'none');
 
-
       var shape = markerSelection.append('path');
       if (position === 'end') {
-        shape.attr('transform', 'rotate(180, 6, 6)');
+        shape.attr('transform', 'rotate(180, ' + markerData[name].markerElement.markerWidth / 2 + ',' + markerData[name].markerElement.markerHeight / 2 + ')');
       }
       else {
       }
       markerShapeAttributes.attributes.forEach(function(attribute) {
-        console.log('attribute');
-        console.log(attribute);
         shape.attr(attribute.name, attribute.value);
       });
 
@@ -162,3 +163,40 @@ d3.select('svg').select('#viewport').append('path').attr('d', 'M0,0L50,100').att
     }
   }
 };
+
+
+/* here's an example of using this:
+
+crossPlatformShapes.init({targetImageSelector:'#my-svg'});
+crossPlatformShapes.lineStraight({points:[{x:0,y:0},{x:50,y:100}],markerStart:'arrow',color:'red',markerEnd:'arrow'});
+var p = d3.select('svg').select('#viewport').append(myResult.elementName)
+myResult.attributes.forEach(function(attribute) {
+  console.log(attribute);
+  p.attr(attribute.name, attribute.value);
+});
+
+
+and one more:
+
+crossPlatformShapes.init({targetImageSelector:'#my-svg'});
+crossPlatformShapes.lineStraight({points:[{x:0,y:0},{x:50,y:100}],markerStart:'arrow',color:'#00ff00',markerEnd:'arrow'});
+var p = d3.select('svg').select('#viewport').append(myResult.elementName)
+myResult.attributes.forEach(function(attribute) {
+  console.log(attribute);
+  p.attr(attribute.name, attribute.value);
+});
+
+crossPlatformShapes.rectangle({x:100,y:50,width:80,height:20,color:'blue',backgroundColor:'white',rotation:-15});
+var r1 = d3.select('svg').select('#viewport').append(myResult.elementName)
+myResult.attributes.forEach(function(attribute) {
+  console.log(attribute);
+  r1.attr(attribute.name, attribute.value);
+});
+
+crossPlatformShapes.rectangle({x:100,y:50,width:80,height:20,color:'black',backgroundColor:'white'});
+var r2 = d3.select('svg').select('#viewport').append(myResult.elementName)
+myResult.attributes.forEach(function(attribute) {
+  console.log(attribute);
+  r2.attr(attribute.name, attribute.value);
+});
+//*/
