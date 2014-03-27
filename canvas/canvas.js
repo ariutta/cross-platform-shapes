@@ -1,4 +1,4 @@
-crossPlatformShapes.svg = function(){
+crossPlatformShapes.canvas = function(){
   var arc = function(data){
     return this.path.prepareForRendering('arc', data);
   };
