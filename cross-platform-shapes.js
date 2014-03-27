@@ -10,8 +10,10 @@ window.crossPlatformShapes = {
     }
   },
   arc: function(data){
-    //return this[this.format].arc();
     return this[this.format].arc(data);
+  },
+  arrow: function(data){
+    return this[this.format].arrow(data);
   },
   brace: function(data){
     return this[this.format].brace(data);

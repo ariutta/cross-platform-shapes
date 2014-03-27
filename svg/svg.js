@@ -2,6 +2,9 @@ crossPlatformShapes.svg = function(){
   var arc = function(data){
     return this.path.prepareForRendering('arc', data);
   };
+  var arrow = function(data){
+    return this.path.prepareForRendering('arrow', data);
+  };
   var brace = function(data){
     return this.path.prepareForRendering('brace', data);
   };
@@ -14,6 +17,7 @@ crossPlatformShapes.svg = function(){
 
   return {
     arc:arc,
+    arrow:arrow,
     brace:brace,
     lineStraight:lineStraight,
     rectangle:rectangle

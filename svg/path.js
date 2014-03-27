@@ -6,7 +6,7 @@ crossPlatformShapes.svg.path = {
     return id;
   },
 
-  prepareForRendering: function(shapeName, data){
+  prepareForRendering: function(shapeName, data) {
     var svgPathGenerator = this;
     var canvasPathCommandToSvgPathCommandMappings = {
       moveTo: 'M',
@@ -32,19 +32,34 @@ crossPlatformShapes.svg.path = {
     var color = data.color;
     attributes.push({name: 'stroke', value: color});
 
-    var markerStart = data.markerStart, markerStartId;
+    var markerStart = data.markerStart;
     if (!!markerStart) {
-      markerStartId = svgPathGenerator.generateMarkerId(markerStart, 'start', color);
-      svgPathGenerator.appstartMarker(markerStartId, function() {
-        attributes.push({name: 'marker-start', value: 'url(#' + markerStartId + ')'});
+      svgPathGenerator.appendMarker(markerStart, 'start', color, function(markerId) {
+        attributes.push({name: 'marker-start', value: 'url(#' + markerId + ')'});
       });
     }
 
-    var markerEnd = data.markerEnd, markerEndId;
+
+/*
+d3.select('svg').select('defs').append('clipPath').attr('id', 'my-clip-path-end').append('circle').attr('cx', 25).attr('cy', 50).attr('r', 30);
+d3.select('svg').select('#viewport').append('circle').attr('cx', 50).attr('cy', 100).attr('r', 5).attr('stroke', 'black').attr('stroke-width', 1);
+d3.select('svg').select('#viewport').append('path').attr('d', 'M0,0L50,100').attr('stroke', 'black').attr('stroke-width', 1).attr('clip-path', 'url(#my-clip-path-end)');
+//*/
+
+/*
+crossPlatformShapes.init({targetImageSelector:'#my-svg'});
+crossPlatformShapes.lineStraight({points:[{x:0,y:0},{x:50,y:100}],markerEnd:'arrow',color:'black'});
+//d3.select('svg').select('defs').append('clipPath').attr('id', 'my-clip-path-end').append('circle').attr('cx', 25).attr('cy', 50).attr('r', 30);
+//d3.select('svg').select('#viewport').append('circle').attr('cx', 50).attr('cy', 100).attr('r', 5).attr('stroke', 'black').attr('stroke-width', 1);
+//d3.select('svg').select('#viewport').append('path').attr('d', 'M0,0L50,100').attr('stroke', 'black').attr('stroke-width', 1).attr('clip-path', 'url(#my-clip-path-end)');
+d3.select('svg').select('#viewport').append('path').attr('d', 'M0,0L50,100').attr('stroke', 'black').attr('stroke-width', 1).attr('marker-end', 'url(#id-arrow-end-black)');
+//*/
+
+
+    var markerEnd = data.markerEnd;
     if (!!markerEnd) {
-      markerEndId = svgPathGenerator.generateMarkerId(markerEnd, 'end', color);
-      svgPathGenerator.appendMarker(markerEndId, function() {
-        attributes.push({name: 'marker-end', value: 'url(#' + markerEndId + ')'});
+      svgPathGenerator.appendMarker(markerEnd, 'end', color, function(markerId) {
+        attributes.push({name: 'marker-end', value: 'url(#' + markerId + ')'});
       });
     }
 
@@ -56,19 +71,94 @@ crossPlatformShapes.svg.path = {
     return result;
   },
 
-  appendMarker: function(markerId, callback) {
+  appendMarker: function(name, position, color, callback) {
+
+
+    /*
+<marker id="src-shape-library-markers-arrow-svg-start-default" preserveAspectRatio="none" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" markerUnits="strokeWidth" orient="auto" refX="0" refY="6"><g id="g-src-shape-library-markers-arrow-svg-start-default" class="solid-stroke default-fill-color">
+
+	<!-- arrow markers: triangular polygons, no stroke -->
+
+	<rect class="board-fill-color" stroke="none" x="0" y="5.4" width="2" height="1.2"></rect>
+	<polygon stroke-width="0" points="12,11 0,6 12,1"></polygon>
+
+</g></marker>
+//*/
+
+    /*
+<marker id="src-shape-library-markers-arrow-svg-end-default" preserveAspectRatio="none" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" markerUnits="strokeWidth" orient="auto" refX="12" refY="6"><g id="g-src-shape-library-markers-arrow-svg-end-default" class="solid-stroke default-fill-color" transform="rotate(180, 6, 6)">
+
+	<!-- arrow markers: triangular polygons, no stroke -->
+
+	<rect class="board-fill-color" stroke="none" x="0" y="5.4" width="2" height="1.2"></rect>
+	<polygon stroke-width="0" points="12,11 0,6 12,1"></polygon>
+
+</g></marker>
+//*/
+
+
+    var markerData = {
+      arrow: {
+        markerElement: {
+          viewBox:"0 0 12 12",
+          markerWidth:12,
+          markerHeight:12
+        },
+        shapeElement: {
+          x:0,
+          y:0,
+          width:12,
+          height:12,
+          color:color
+        }
+      }
+    };
     var svgPathGenerator = this;
     var svgSelection = d3.select(svgPathGenerator.targetImage);
+
+    var markerId = svgPathGenerator.generateMarkerId(name, position, color);
     var markerSelection = svgSelection.select('defs').select('#' + markerId);
 
     if (!markerSelection[0][0]) {
+      var markerShapeAttributes = svgPathGenerator.prepareForRendering(name, markerData[name].shapeElement);
+      console.log('markerShapeAttributes');
+      console.log(markerShapeAttributes);
       markerSelection = svgSelection.select('defs').append('marker')
       .attr('id', markerId)
+      .attr('markerUnits', 'strokeWidth')
+      .attr('orient', 'auto')
+      //.attr('stroke', color)
+      .attr('viewBox', markerData[name].markerElement.viewBox)
+      .attr('markerWidth', markerData[name].markerElement.markerWidth)
+      .attr('markerHeight', markerData[name].markerElement.markerHeight)
+      .attr('refX', function() {
+        if (position === 'end') {
+          return markerData[name].markerElement.markerWidth;
+        }
+        else {
+          return 0;
+        }
+      })
+      .attr('refY', markerData[name].markerElement.markerHeight / 2)
       .attr('preserveAspectRatio', 'none');
-      callback(null);
+
+
+      var shape = markerSelection.append('path');
+      if (position === 'end') {
+        shape.attr('transform', 'rotate(180, 6, 6)');
+      }
+      else {
+      }
+      markerShapeAttributes.attributes.forEach(function(attribute) {
+        console.log('attribute');
+        console.log(attribute);
+        shape.attr(attribute.name, attribute.value);
+      });
+
+      callback(markerId);
     }
     else {
-      callback(null);
+      callback(markerId);
     }
   }
 };
