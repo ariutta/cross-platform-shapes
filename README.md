@@ -3,6 +3,11 @@ cross-platform-shapes
 
 JS library for creating shapes in SVG, Canvas and possibly other formats in the future.
 
+
+# Demo
+[Github Pages](http://ariutta.github.io/cross-platform-shapes/)
+
+# Installation
 First initialize the library with a call like this:
 
 ```JS
