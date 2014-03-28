@@ -70,7 +70,20 @@
 
 <script>
   var crossPlatformShapesDemo = Object.create(crossPlatformShapes);
-  crossPlatformShapesDemo.init({targetImageSelector:'#my-svg'});
+  crossPlatformShapesDemo.init({
+    targetImageSelector:'#my-svg',
+    customShapes: { // optional
+      arc: {
+        href: 'http://www.example.org/arc.png'
+      },
+      brace:{
+        href: 'http://www.example.org/brace.png'
+      },
+      rectangle:{
+        href: 'http://www.wikipathways.org/skins/common/images/earth-or-pathway_text3_beta.png'
+      }
+    }
+  });
   var edgeRenderingData = crossPlatformShapesDemo.lineStraight({
     points:[{x:0,y:0},{x:50,y:100}],
     markerStart:'arrow',
@@ -105,4 +118,36 @@
   rectangle2RenderingData.attributes.forEach(function(attribute) {
     rectangle2.attr(attribute.name, attribute.value);
   });
+
+
+//*
+  var rectangle3RenderingData = crossPlatformShapesDemo.rectangle({
+    x:200,
+    y:300,
+    width:80,
+    height:20,
+    color:'purple',
+    backgroundColor:'white',
+    rotation:45});
+  var rectangle3 = d3.select('svg').select('#viewport').append(rectangle3RenderingData.elementName)
+  rectangle3RenderingData.attributes.forEach(function(attribute) {
+    rectangle3.attr(attribute.name, attribute.value);
+  });
+  //*/
+//crossPlatformShapesDemo.svg.rectangle = crossPlatformShapesDemo.svg.image.rectangle
+/*
+  var rectangle3RenderingData = {};
+rectangle3RenderingData.attributes = [
+    {name: 'x', value: 200},
+    {name: 'y', value:300},
+    {name: 'width', value:100},
+    {name: 'height', value:200},
+    {name: 'xlink:href', value:'http://www.wikipathways.org/skins/common/images/earth-or-pathway_text3_beta.png'},
+    {name: 'rotation', value:45}];
+var rectangle3 = d3.select('svg').select('#viewport').append('image');
+  rectangle3RenderingData.attributes.forEach(function(attribute) {
+    rectangle3.attr(attribute.name, attribute.value);
+  });
+    //*/
+
 </script>

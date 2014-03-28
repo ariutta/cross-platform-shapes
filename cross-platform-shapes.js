@@ -1,12 +1,17 @@
 window.crossPlatformShapes = {
   init: function(args){
+    var customShapes = args.customShapes;
+
     var crossPlatformShapes = this;
     var targetImageSelector = args.targetImageSelector;
     var targetImage = document.querySelector(targetImageSelector);
     this.svg.path.targetImage = targetImage;
     crossPlatformShapes.format = targetImage.tagName.toLowerCase();
-    if (!!args.customShapes) {
-      crossPlatformShapes.customShapes = args.customShapes;
+    if (!!customShapes) {
+      crossPlatformShapes[crossPlatformShapes.format].image.customShapes = customShapes;
+      d3.map(customShapes).keys().forEach(function(customShapeName) {
+        crossPlatformShapes[customShapeName] = crossPlatformShapes[crossPlatformShapes.format].image[customShapeName];
+      });
     }
   },
   arc: function(data){
