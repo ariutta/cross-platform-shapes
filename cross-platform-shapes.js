@@ -2,15 +2,16 @@ window.crossPlatformShapes = {
   init: function(args){
     var customShapes = args.customShapes;
 
-    var crossPlatformShapes = this;
+    var crossPlatformShapesInstance = this;
     var targetImageSelector = args.targetImageSelector;
     var targetImage = document.querySelector(targetImageSelector);
     this.svg.path.targetImage = targetImage;
-    crossPlatformShapes.format = targetImage.tagName.toLowerCase();
+    crossPlatformShapesInstance.format = targetImage.tagName.toLowerCase();
     if (!!customShapes) {
-      crossPlatformShapes[crossPlatformShapes.format].image.customShapes = customShapes;
+      crossPlatformShapesInstance.customShapes = customShapes;
+      crossPlatformShapesInstance[crossPlatformShapesInstance.format].image.customShapes = customShapes;
       d3.map(customShapes).keys().forEach(function(customShapeName) {
-        crossPlatformShapes[customShapeName] = crossPlatformShapes[crossPlatformShapes.format].image[customShapeName];
+        crossPlatformShapesInstance[customShapeName] = crossPlatformShapesInstance[crossPlatformShapesInstance.format].image[customShapeName];
       });
     }
   },
