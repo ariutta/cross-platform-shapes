@@ -1,5 +1,5 @@
 crossPlatformShapes.svg.image = function(){
-  var render = function(shapeName, data){
+  var prepareForRendering = function(shapeName, data){
     var result = {};
     var attributes = [];
     result.elementName = 'image';
@@ -17,21 +17,23 @@ crossPlatformShapes.svg.image = function(){
   };
 
   var arc = function(data){
-    return render('arc', data);
+    return prepareForRendering('arc', data);
   };
 
   var brace = function(data){
-    return render('brace', data);
+    return prepareForRendering('brace', data);
   };
 
   var rectangle = function(data){
-    return render('rectangle', data);
+    return prepareForRendering('rectangle', data);
   };
+
+  // TODO figure out how custom shapes will be added.  try to avoid adding manually having to add a call to prepareForRendering() for every shape.
 
   return {
     arc:arc,
     brace:brace,
     rectangle:rectangle,
-    render:render
+    prepareForRendering:prepareForRendering
   };
 }();
