@@ -14,7 +14,7 @@ First initialize the library with a call like this:
   var crossPlatformShapesDemo = Object.create(crossPlatformShapes);
   crossPlatformShapesDemo.init({
     targetImageSelector:'#my-svg'
-    crossPlatformShapes.customShapes = { // optional
+    customShapes = { // optional
       arc: {
         href: 'http://www.example.org/arc.png'
       },
@@ -46,3 +46,7 @@ it to the SVG. The Canvas version will probably need to determine the path data 
 the marker and concatenate that path data with the path data for the edge itself.
 
 This library is still in alpha, and the Canvas functionality is not yet implemented.
+
+
+# License
+Apache License 2.0. See LICENSE file.
