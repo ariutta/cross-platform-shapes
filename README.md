@@ -1,14 +1,18 @@
-cross-platform-shapes
+cross-platform-shapes (pre-release)
 =====================
 
-JS library for creating shapes in SVG, Canvas and possibly other formats in the future.
+JS helper library for creating shapes in SVG, Canvas and possibly other formats in the future.
 
 
 # Demo
 [Github Pages](http://ariutta.github.io/cross-platform-shapes/)
 
+# Dependencies
+[D3.js](http://www.d3js.org)
+
 # Installation
-First initialize the library with a call like this:
+1) Add script elements to your page, like in [the demo](https://github.com/ariutta/cross-platform-shapes/blob/master/index.html)
+2) Initialize the library:
 
 ```JS
   var crossPlatformShapesDemo = Object.create(crossPlatformShapes);
@@ -25,6 +29,23 @@ First initialize the library with a call like this:
         href: 'http://www.example.org/rectangle.png'
       }
     }
+  });
+```
+
+3) Add shapes:
+
+```JS
+  var myShapeRenderingData = crossPlatformShapesInstance1.rectangle({
+    x:100,
+    y:50,
+    width:80,
+    height:20,
+    color:'blue',
+    backgroundColor:'white',
+    rotation:-15});
+  var myShape = d3.select('svg').select('#viewport').append(myShapeRenderingData.elementName)
+  myShapeRenderingData.attributes.forEach(function(attribute) {
+    myShape.attr(attribute.name, attribute.value);
   });
 ```
 
@@ -46,7 +67,6 @@ it to the SVG. The Canvas version will probably need to determine the path data 
 the marker and concatenate that path data with the path data for the edge itself.
 
 This library is still in alpha, and the Canvas functionality is not yet implemented.
-
 
 # License
 Apache License 2.0. See LICENSE file.
