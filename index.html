@@ -115,13 +115,13 @@
     targetImageSelector:'#my-svg',
     customShapes: { // optional
       arc: {
-        href: 'http://www.example.org/arc.png'
+        href: 'http://upload.wikimedia.org/wikipedia/commons/5/5c/Triangular_arch.svg'
       },
       brace:{
-        href: 'http://www.example.org/brace.png'
+        href: 'http://farm2.staticflickr.com/1175/1331501691_931c8a09d1_z.jpg'
       },
       rectangle:{
-        href: 'http://www.wikipathways.org/skins/common/images/earth-or-pathway_text3_beta.png'
+        href: 'http://upload.wikimedia.org/wikipedia/commons/3/38/Rect_Geometry.png'
       }
     }
   });
@@ -137,21 +137,4 @@
   rectangle3RenderingData.attributes.forEach(function(attribute) {
     rectangle3.attr(attribute.name, attribute.value);
   });
-  //*/
-//crossPlatformShapesInstance1.svg.rectangle = crossPlatformShapesInstance1.svg.image.rectangle
-/*
-  var rectangle3RenderingData = {};
-rectangle3RenderingData.attributes = [
-    {name: 'x', value: 200},
-    {name: 'y', value:300},
-    {name: 'width', value:100},
-    {name: 'height', value:200},
-    {name: 'xlink:href', value:'http://www.wikipathways.org/skins/common/images/earth-or-pathway_text3_beta.png'},
-    {name: 'rotation', value:45}];
-var rectangle3 = d3.select('svg').select('#viewport').append('image');
-  rectangle3RenderingData.attributes.forEach(function(attribute) {
-    rectangle3.attr(attribute.name, attribute.value);
-  });
-    //*/
-
 </script>
