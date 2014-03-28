@@ -43,3 +43,42 @@
 <script src="./path-calculator/brace.js"></script>
 <script src="./path-calculator/line-straight.js"></script>
 <script src="./path-calculator/rectangle.js"></script>
+
+<script>
+  var crossPlatformShapesDemo = Object.create(crossPlatformShapes);
+  crossPlatformShapesDemo.init({targetImageSelector:'#my-svg'});
+  var edgeRenderingData = crossPlatformShapesDemo.lineStraight({
+    points:[{x:0,y:0},{x:50,y:100}],
+    markerStart:'arrow',
+    color:'#00ff00',
+    markerEnd:'arrow'});
+  var edge = d3.select('svg').select('#viewport').append(edgeRenderingData.elementName)
+  edgeRenderingData.attributes.forEach(function(attribute) {
+    edge.attr(attribute.name, attribute.value);
+  });
+
+  var rectangle1RenderingData = crossPlatformShapesDemo.rectangle({
+    x:100,
+    y:50,
+    width:80,
+    height:20,
+    color:'blue',
+    backgroundColor:'white',
+    rotation:-15});
+  var rectangle1 = d3.select('svg').select('#viewport').append(rectangle1RenderingData.elementName)
+  rectangle1RenderingData.attributes.forEach(function(attribute) {
+    rectangle1.attr(attribute.name, attribute.value);
+  });
+
+  var rectangle2RenderingData = crossPlatformShapesDemo.rectangle({
+    x:100,
+    y:50,
+    width:80,
+    height:20,
+    color:'black',
+    backgroundColor:'white'});
+  var rectangle2 = d3.select('svg').select('#viewport').append(rectangle2RenderingData.elementName)
+  rectangle2RenderingData.attributes.forEach(function(attribute) {
+    rectangle2.attr(attribute.name, attribute.value);
+  });
+</script>
