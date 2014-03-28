@@ -14,7 +14,7 @@ First initialize the library with a call like this:
   var crossPlatformShapesDemo = Object.create(crossPlatformShapes);
   crossPlatformShapesDemo.init({
     targetImageSelector:'#my-svg'
-    customShapes = { // optional
+    customShapes: { // optional
       arc: {
         href: 'http://www.example.org/arc.png'
       },
