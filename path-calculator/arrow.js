@@ -6,9 +6,9 @@ crossPlatformShapes.pathCalculator.arrow = function(data){
     width = data.width,
     height = data.height;
 
-  var pathData = [{ command: 'moveTo', points: [(x + width), 0] },
-    { command: 'lineTo', points: [0, (y + height/2)]},
-    { command: 'lineTo', points: [(x + width), (y + height)] },
+  var pathData = [{ command: 'moveTo', points: [(x), y] },
+    { command: 'lineTo', points: [x + width, (y + height/2)]},
+    { command: 'lineTo', points: [(x), (y + height)] },
     { command: 'closePath', points: [] }];
 
   return pathData;

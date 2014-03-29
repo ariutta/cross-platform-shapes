@@ -1,4 +1,4 @@
-crossPlatformShapes.pathCalculator.lineElbow = function(){
+crossPlatformShapes.pathCalculator.lineElbow = function(data){
   'use strict';
 
   //for generating line segments through a path of points (pathpoints, not waypoints)
@@ -6,21 +6,9 @@ crossPlatformShapes.pathCalculator.lineElbow = function(){
   .x(function(d) {return d.x;})
   .y(function(d) {return d.y;})
   .interpolate("linear");
-  //.interpolate("linear");
 
-  function getAttributes(data) {
-    var pathData = svgLine(data.points);
+  var pathData = svgLine(data.points);
 
-    var attributes = [
-      {
-        name:'d',
-        value: pathData
-      }
-    ];
-    return attributes;
-  }
+  return pathData;
+};
 
-  return {
-    getAttributes:getAttributes
-  };
-}();

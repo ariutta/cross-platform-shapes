@@ -1,4 +1,4 @@
-crossPlatformShapes.pathCalculator.lineSegmented = function(){
+crossPlatformShapes.pathCalculator.lineSegmented = function(data){
   'use strict';
 
   //for generating line segments through a path of points (pathpoints, not waypoints)
@@ -7,19 +7,7 @@ crossPlatformShapes.pathCalculator.lineSegmented = function(){
   .y(function(d) {return d.y;})
   .interpolate("linear");
 
-  function getAttributes(data) {
-    var pathData = svgLine(data.points);
+  var pathData = svgLine(data.points);
 
-    var attributes = [
-      {
-        name:'d',
-        value: pathData
-      }
-    ];
-    return attributes;
-  }
-
-  return {
-    getAttributes:getAttributes
-  };
-}();
+  return attributes;
+};

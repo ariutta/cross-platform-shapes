@@ -15,8 +15,8 @@ JS helper library for creating shapes in SVG, Canvas and possibly other formats 
 2) Initialize the library:
 
 ```JS
-  var crossPlatformShapesDemo = Object.create(crossPlatformShapes);
-  crossPlatformShapesDemo.init({
+  var crossPlatformShapeInstance = Object.create(crossPlatformShapes);
+  crossPlatformShapeInstance.init({
     targetImageSelector:'#my-svg',
     customShapes: { // optional
       arc: {
@@ -35,17 +35,26 @@ JS helper library for creating shapes in SVG, Canvas and possibly other formats 
 3) Add shapes:
 
 ```JS
-  var myShapeRenderingData = crossPlatformShapesInstance1.rectangle({
+  var myEdgeRenderingData = crossPlatformShapesInstance1.lineCurved({
+    points:[{x:100,y:75},{x:1,y:190},{x:60,y:310},{x:100,y:325}],
+    markerStart:'arrow',
+    color:'green',
+    markerEnd:'tBar'});
+  var myEdge = d3.select('svg').select('#viewport').append(myEdgeRenderingData.elementName)
+  myEdgeRenderingData.attributes.forEach(function(attribute) {
+    myEdge.attr(attribute.name, attribute.value);
+  });
+
+  var myNodeRenderingData = crossPlatformShapesInstance1.complex({
     x:100,
-    y:50,
+    y:300,
     width:80,
-    height:20,
-    color:'blue',
-    backgroundColor:'white',
-    rotation:-15});
-  var myShape = d3.select('svg').select('#viewport').append(myShapeRenderingData.elementName)
-  myShapeRenderingData.attributes.forEach(function(attribute) {
-    myShape.attr(attribute.name, attribute.value);
+    height:50,
+    color:'brown',
+    backgroundColor:'white'});
+  var myNode = d3.select('svg').select('#viewport').append(myNodeRenderingData.elementName)
+  myNodeRenderingData.attributes.forEach(function(attribute) {
+    myNode.attr(attribute.name, attribute.value);
   });
 ```
 

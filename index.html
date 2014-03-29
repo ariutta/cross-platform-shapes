@@ -15,6 +15,12 @@
           </g>
           <title>diagram</title>
           <defs>
+            <linearGradient id="MyGradient">
+              <stop offset="0%" stop-color="red"></stop>
+              <stop offset="95%" stop-color="red"></stop>
+              <stop offset="95%" stop-opacity="1"></stop>
+              <stop offset="95%" stop-opacity="0"></stop>
+            </linearGradient>
           </defs>
           <g id="viewport">
           </g>
@@ -73,17 +79,30 @@
   crossPlatformShapesInstance1.init({
     targetImageSelector:'#my-svg'
   });
-  var edgeRenderingData = crossPlatformShapesInstance1.lineStraight({
-    points:[{x:0,y:0},{x:50,y:100}],
-    markerStart:'arrow',
+  var edge1RenderingData = crossPlatformShapesInstance1.lineStraight({
+    id:'tBar-and-t-bar',
+    points:[{x:140,y:74},{x:230,y:300}],
+    markerStart:'tBar',
     color:'#00ff00',
-    markerEnd:'arrow'});
-  var edge = d3.select('svg').select('#viewport').append(edgeRenderingData.elementName)
-  edgeRenderingData.attributes.forEach(function(attribute) {
-    edge.attr(attribute.name, attribute.value);
+    markerEnd:'tBar'});
+  var edge1 = d3.select('svg').select('#viewport').append(edge1RenderingData.elementName)
+  edge1RenderingData.attributes.forEach(function(attribute) {
+    edge1.attr(attribute.name, attribute.value);
+  });
+
+  var edge2RenderingData = crossPlatformShapesInstance1.lineCurved({
+    id:'edge2',
+    points:[{x:180,y:50},{x:500,y:20},{x:290,y:294}],
+    markerStart:'tBar',
+    color:'red',
+    markerEnd:'tBar'});
+  var edge2 = d3.select('svg').select('#viewport').append(edge2RenderingData.elementName)
+  edge2RenderingData.attributes.forEach(function(attribute) {
+    edge2.attr(attribute.name, attribute.value);
   });
 
   var rectangle1RenderingData = crossPlatformShapesInstance1.rectangle({
+    id:'rectangle1',
     x:100,
     y:50,
     width:80,
@@ -97,6 +116,7 @@
   });
 
   var rectangle2RenderingData = crossPlatformShapesInstance1.rectangle({
+    id:'rectangle2',
     x:100,
     y:50,
     width:80,
