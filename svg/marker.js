@@ -42,7 +42,8 @@ crossPlatformShapes.svg.marker = {
         markerElement: {
           viewBox:'0 0 10 20',
           markerWidth:10,
-          markerHeight:20
+          markerHeight:20,
+          refY:10
         },
         shapes: [
           {
@@ -77,13 +78,28 @@ crossPlatformShapes.svg.marker = {
     else {
       var marker = targetImageSelectionDefs.append('marker')
       .attr('id', markerId)
+      .attr('orient', 'auto')
+      .attr('markerUnits', 'strokeWidth')
       .attr('preserveAspectRatio', 'none');
       d3.map(markerData[name].markerElement).entries().forEach(function(attribute) {
         marker.attr(attribute.key, attribute.value);
       });
+      if (position === 'end') {
+        marker.attr('refX', markerData[name].markerElement.markerWidth);
+      }
+      else {
+        marker.attr('refX', 0);
+      }
+
+      var markerContainer = marker.append('g')
+      .attr('id', 'g-' + markerId);
+
+      if (position === 'end') {
+        markerContainer.attr('transform', 'rotate(180, ' + markerData[name].markerElement.markerWidth/2 + ', ' + markerData[name].markerElement.markerHeight/2 + ')');
+      }
 
       markerData[name].shapes.forEach(function(shape) {
-        var shapeSelection = marker.append(shape.elementTag);
+        var shapeSelection = markerContainer.append(shape.elementTag);
         d3.map(shape).entries().forEach(function(attribute) {
           if (attribute.key !== 'elementTag') {
             shapeSelection.attr(attribute.key, attribute.value);
