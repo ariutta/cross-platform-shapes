@@ -2,10 +2,23 @@ window.crossPlatformShapes = {
   init: function(args){
     var customShapes = args.customShapes;
     var crossPlatformShapesInstance = this;
+    this.svg.path.crossPlatformShapesInstance = crossPlatformShapesInstance;
+
     var targetImageSelector = args.targetImageSelector;
     var targetImage = document.querySelector(targetImageSelector);
+    var targetImageSelection = d3.select(targetImage);
+    this.svg.marker.targetImageSelectionDefs = targetImageSelection.select('defs');
     this.svg.path.targetImage = targetImage;
+
     crossPlatformShapesInstance.format = targetImage.tagName.toLowerCase();
+
+    var backgroundColor = args.backgroundColor;
+    if (crossPlatformShapesInstance.format === 'svg') {
+      this.svg.path.availableMarkers = this.svg.marker.availableMarkers = {};
+
+      this.svg.path.backgroundColor = this.svg.marker.backgroundColor = backgroundColor;
+      targetImageSelection.attr('style', 'background-color:' + backgroundColor + '; ');
+    }
 
     var presetShapesNames = [
       'arc',
