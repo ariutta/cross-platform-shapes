@@ -5,8 +5,6 @@ window.crossPlatformShapes = {
     this.svg.crossPlatformShapesInstance = this.svg.path.crossPlatformShapesInstance = crossPlatformShapesInstance;
 
     var targetSelector = args.targetSelector;
-    console.log('targetSelector');
-    console.log(targetSelector);
     var target = document.querySelector(targetSelector);
     var targetTagName = target.tagName.toLowerCase();
     var targetSelection = d3.select(target);

@@ -10,14 +10,11 @@ crossPlatformShapes.svg.path = {
     var svgPathGenerator = this;
     var availableMarkers = this.availableMarkers;
     var crossPlatformShapesInstance = this.crossPlatformShapesInstance;
-
-    // from http://bl.ocks.org/mbostock/4281513
-    function pointLineSegmentParameter(p2, p0, p1) {
-      var x10 = p1[0] - p0[0], y10 = p1[1] - p0[1],
-          x20 = p2[0] - p0[0], y20 = p2[1] - p0[1];
-      return (x20 * x10 + y20 * y10) / (x10 * x10 + y10 * y10);
-    }
-
+    var attributeDependencyOrder = [
+      'color',
+      'markerStart',
+      'markerEnd'
+    ];
     var canvasPathCommandToSvgPathCommandMappings = {
       moveTo: 'M',
       lineTo: 'L',
@@ -51,35 +48,64 @@ crossPlatformShapes.svg.path = {
     }
     attributes.push({name: 'd', value: d});
 
-    var id = data.id;
-    if (!!id) {
-      attributes.push({name: 'id', value: id});
-    }
 
     var backgroundColor = data.backgroundColor || 'transparent';
     attributes.push({name: 'fill', value: backgroundColor});
 
-    var color = data.color;
-    attributes.push({name: 'stroke', value: color});
+    var color;
 
-    var markerStart = data.markerStart;
-    if (!!markerStart) {
-      crossPlatformShapesInstance.svg.marker.append(markerStart, 'start', color, function(markerStartId) {
-        attributes.push({name: 'marker-start', value: 'url(#' + markerStartId + ')'});
-      });
-    }
+    //*
+    var svgPathAttributeGenerator = {
+      id: function(idValue){
+        attributes.push({name: 'id', value: idValue});
+      },
+      strokeDasharray: function(strokeDasharrayValue){
+        attributes.push({name: 'stroke-dasharray', value: strokeDasharrayValue});
+      },
+      fill: function(fillValue){
+        attributes.push({name: 'fill', value: fillValue});
+      },
+      fillOpacity: function(fillOpacityValue){
+        attributes.push({name: 'fill-opacity', value: fillOpacityValue});
+      },
+      color: function(colorValue){
+        color = colorValue;
+        attributes.push({name: 'color', value: colorValue});
+        attributes.push({name: 'stroke', value: colorValue});
+      },
+      markerStart: function(markerStartValue) {
+        crossPlatformShapesInstance.svg.marker.append(markerStartValue, 'start', color, function(markerId) {
+          attributes.push({name: 'marker-start', value: 'url(#' + markerId + ')'});
+        });
+      },
+      markerEnd: function(markerEndValue) {
+        crossPlatformShapesInstance.svg.marker.append(markerEndValue, 'end', color, function(markerId) {
+          attributes.push({name: 'marker-end', value: 'url(#' + markerId + ')'});
+        });
+      },
+      rotation: function(rotationValue) {
+        var transform = 'rotate(' + rotationValue + ',' + (data.x + data.width/2) + ',' + (data.y + data.height/2) + ')';
+        attributes.push({name: 'transform', value: transform});
+      },
+      strokeWidth: function(strokeWidthValue) {
+        attributes.push({name: 'stroke-width', value: strokeWidthValue});
+      }
+    };
 
-    var markerEnd = data.markerEnd;
-    if (!!markerEnd) {
-      crossPlatformShapesInstance.svg.marker.append(markerEnd, 'end', color, function(markerEndId) {
-        attributes.push({name: 'marker-end', value: 'url(#' + markerEndId + ')'});
-      });
-    }
+    // These are generic attributes that can apply to any pathShape.
+    var attributeListItemName, attributeListItemValue;
+    var attributeList = d3.map(data).entries().sort(function(a, b) {
+      return attributeDependencyOrder.indexOf(a.key) - attributeDependencyOrder.indexOf(b.key);
+    });
+    attributeList.forEach(function(attributeListItem){
+      attributeListItemName = attributeListItem.key;
+      attributeListItemValue = attributeListItem.value;
+      if (svgPathAttributeGenerator.hasOwnProperty(attributeListItemName)) {
+        svgPathAttributeGenerator[attributeListItemName](attributeListItemValue);
+      }
+    });
+//*/
 
-    var rotation = data.rotation;
-    if (!!rotation) {
-      attributes.push({name: 'transform', value: 'rotate(' + rotation + ',' + (data.x + data.width/2) + ',' + (data.y + data.height/2) + ')'});
-    }
     result.attributes = attributes;
     self.myResult = result;
     return result;
