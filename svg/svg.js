@@ -5,6 +5,7 @@ crossPlatformShapes.svg = {
       backgroundColor = args.backgroundColor || '#ffffff';
 
     var crossPlatformShapesInstance = this.crossPlatformShapesInstance;
+    var viewport;
     if (this.targetTagName !== 'svg') {
       var id = args.id || 'cross-platform-shape-svg';
       targetImageSelection = this.targetSelection.append('svg')
@@ -19,11 +20,15 @@ crossPlatformShapes.svg = {
       .attr('height', height)
       .attr('style', 'background-color:' + backgroundColor + '; ');
 
-      var viewport = targetImageSelection.append('g')
+      viewport = targetImageSelection.append('g')
       .attr('id', 'viewport');
     }
     else {
       targetImageSelection = this.targetImageSelection;
+      viewport = targetImageSelection.select('#viewport');
+      if (!viewport[0][0]) {
+        viewport = targetImageSelection.select('g');
+      }
     }
 
     this.marker.targetImageSelectionDefs = this.targetImageSelection.select('defs');
@@ -32,6 +37,8 @@ crossPlatformShapes.svg = {
     this.path.backgroundColor = this.marker.backgroundColor = backgroundColor;
     targetImageSelection.attr('style', 'background-color:' + backgroundColor + '; ');
 
-    callback();
+    if (!!callback) {
+      callback(viewport);
+    }
   }
 };

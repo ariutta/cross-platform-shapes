@@ -11,21 +11,32 @@ window.crossPlatformShapes = {
     var targetTagName = target.tagName.toLowerCase();
     var targetSelection = d3.select(target);
     var format, targetImageSelection;
+
+
     if (targetTagName === 'div') {
       format = args.format;
-      this[format].targetTagName = targetTagName;
       this[format].targetSelection = targetSelection;
-      crossPlatformShapesInstance[format].init(args, function() {
+      this.setFormat(format, customShapes, targetTagName, targetSelection);
+      crossPlatformShapesInstance[format].init(args, function(viewport) {
+        if (!!callback) {
+          callback(viewport);
+        }
       });
     }
     else {
       format = targetTagName;
-      this[format].targetTagName = targetTagName;
       this[format].targetImageSelection = targetSelection;
-      this[format].init(args, function() {
+      this.setFormat(format, customShapes, targetTagName, targetSelection);
+      this[format].init(args, function(viewport) {
+        if (!!callback) {
+          callback(viewport);
+        }
       });
     }
-
+  },
+  setFormat: function(format, customShapes, targetTagName, targetSelection) {
+    var crossPlatformShapesInstance = this;
+    this[format].targetTagName = targetTagName;
     var presetShapesNames = [
       'arc',
       'arrow',
@@ -63,7 +74,6 @@ window.crossPlatformShapes = {
       'mimBranchingLeft',
       'mimBranchingRight'
     ];
-
     presetShapesNames.forEach(function(presetShapeName) {
       crossPlatformShapesInstance[presetShapeName] = function(data){
         return crossPlatformShapesInstance[format].path.prepareForRendering(presetShapeName, data);
@@ -78,9 +88,6 @@ window.crossPlatformShapes = {
           return crossPlatformShapesInstance[format].image.prepareForRendering(customShapeName, data);
         };
       });
-    }
-    if (!!callback) {
-      callback();
     }
   }
 };
