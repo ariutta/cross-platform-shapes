@@ -1,23 +1,29 @@
 window.crossPlatformShapes = {
-  init: function(args){
+  init: function(args, callback){
     var customShapes = args.customShapes;
     var crossPlatformShapesInstance = this;
-    this.svg.path.crossPlatformShapesInstance = crossPlatformShapesInstance;
+    this.svg.crossPlatformShapesInstance = this.svg.path.crossPlatformShapesInstance = crossPlatformShapesInstance;
 
-    var targetImageSelector = args.targetImageSelector;
-    var targetImage = document.querySelector(targetImageSelector);
-    var targetImageSelection = d3.select(targetImage);
-    this.svg.marker.targetImageSelectionDefs = targetImageSelection.select('defs');
-    this.svg.path.targetImage = targetImage;
-
-    crossPlatformShapesInstance.format = targetImage.tagName.toLowerCase();
-
-    var backgroundColor = args.backgroundColor;
-    if (crossPlatformShapesInstance.format === 'svg') {
-      this.svg.path.availableMarkers = this.svg.marker.availableMarkers = {};
-
-      this.svg.path.backgroundColor = this.svg.marker.backgroundColor = backgroundColor;
-      targetImageSelection.attr('style', 'background-color:' + backgroundColor + '; ');
+    var targetSelector = args.targetSelector;
+    console.log('targetSelector');
+    console.log(targetSelector);
+    var target = document.querySelector(targetSelector);
+    var targetTagName = target.tagName.toLowerCase();
+    var targetSelection = d3.select(target);
+    var format, targetImageSelection;
+    if (targetTagName === 'div') {
+      format = args.format;
+      this[format].targetTagName = targetTagName;
+      this[format].targetSelection = targetSelection;
+      crossPlatformShapesInstance[format].init(args, function() {
+      });
+    }
+    else {
+      format = targetTagName;
+      this[format].targetTagName = targetTagName;
+      this[format].targetImageSelection = targetSelection;
+      this[format].init(args, function() {
+      });
     }
 
     var presetShapesNames = [
@@ -60,18 +66,21 @@ window.crossPlatformShapes = {
 
     presetShapesNames.forEach(function(presetShapeName) {
       crossPlatformShapesInstance[presetShapeName] = function(data){
-        return crossPlatformShapesInstance[crossPlatformShapesInstance.format].path.prepareForRendering(presetShapeName, data);
+        return crossPlatformShapesInstance[format].path.prepareForRendering(presetShapeName, data);
       };
     });
 
     if (!!customShapes) {
       crossPlatformShapesInstance.customShapes = customShapes;
-      crossPlatformShapesInstance[crossPlatformShapesInstance.format].image.customShapes = customShapes;
+      crossPlatformShapesInstance[format].image.customShapes = customShapes;
       d3.map(customShapes).keys().forEach(function(customShapeName) {
         crossPlatformShapesInstance[customShapeName] = function(data){
-          return crossPlatformShapesInstance[crossPlatformShapesInstance.format].image.prepareForRendering(customShapeName, data);
+          return crossPlatformShapesInstance[format].image.prepareForRendering(customShapeName, data);
         };
       });
+    }
+    if (!!callback) {
+      callback();
     }
   }
 };

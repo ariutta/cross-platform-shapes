@@ -15,7 +15,8 @@ crossPlatformShapes.svg.marker = {
         markerElement: {
           viewBox:'0 0 12 12',
           markerWidth:12,
-          markerHeight:12
+          markerHeight:12,
+          refY:6
         },
         shapes: [
           {
@@ -24,16 +25,13 @@ crossPlatformShapes.svg.marker = {
             y:5.4,
             width:2,
             height:1.2,
-            stroke:color,
-            fill:color
+            stroke:backgroundColor,
+            fill:backgroundColor
           },
           {
             elementTag: 'polygon',
-            x:0,
-            y:0,
-            width:12,
-            height:12,
-            stroke:color,
+            points:'12,11 0,6 12,1',
+            'stroke-width':0,
             fill:color
           }
         ]
@@ -52,7 +50,7 @@ crossPlatformShapes.svg.marker = {
             y:9,
             width:8,
             height:2,
-            fill:color
+            fill:backgroundColor
           },
           {
             elementTag: 'line',
@@ -70,6 +68,8 @@ crossPlatformShapes.svg.marker = {
         ]
       }
     };
+
+    markerData.mimInhibition = markerData.tBar;
 
     var markerId = this.generateId(name, position, color);
     if (availableMarkers[markerId]) {
