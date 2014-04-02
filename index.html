@@ -72,22 +72,28 @@
     points:[{x:140,y:74},{x:230,y:300}],
     markerStart:'arrow',
     color:'#00ff00',
+    containerSelector: '#viewport',
     markerEnd:'arrow'});
+/*
   var edge1 = d3.select('#my-svg1').select('#viewport').append(edge1RenderingData.elementName)
   edge1RenderingData.attributes.forEach(function(attribute) {
     edge1.attr(attribute.name, attribute.value);
   });
+  //*/
 
   var edge2RenderingData = crossPlatformShapesInstance1.lineCurved({
     id:'edge2',
     points:[{x:180,y:50},{x:500,y:20},{x:290,y:294}],
     markerStart:'tBar',
     color:'red',
+    containerSelector: '#viewport',
     markerEnd:'tBar'});
+/*
   var edge2 = d3.select('#my-svg1').select('#viewport').append(edge2RenderingData.elementName)
   edge2RenderingData.attributes.forEach(function(attribute) {
     edge2.attr(attribute.name, attribute.value);
   });
+  //*/
 
   var rectangle1RenderingData = crossPlatformShapesInstance1.rectangle({
     id:'rectangle1',
@@ -96,12 +102,15 @@
     width:80,
     height:20,
     color:'blue',
+    containerSelector: '#viewport',
     backgroundColor:'white',
     rotation:-15});
+/*
   var rectangle1 = d3.select('#my-svg1').select('#viewport').append(rectangle1RenderingData.elementName)
   rectangle1RenderingData.attributes.forEach(function(attribute) {
     rectangle1.attr(attribute.name, attribute.value);
   });
+  //*/
 
   var rectangle2RenderingData = crossPlatformShapesInstance1.rectangle({
     id:'rectangle2',
@@ -110,11 +119,14 @@
     width:80,
     height:20,
     color:'black',
+    containerSelector: '#viewport',
     backgroundColor:'white'});
+/*
   var rectangle2 = d3.select('#my-svg1').select('#viewport').append(rectangle2RenderingData.elementName)
   rectangle2RenderingData.attributes.forEach(function(attribute) {
     rectangle2.attr(attribute.name, attribute.value);
   });
+  //*/
 
   var mitochondriaRenderingData = crossPlatformShapesInstance1.mitochondria({
     x:200,
@@ -122,12 +134,15 @@
     width:160,
     height:80,
     color:'purple',
+    containerSelector: '#viewport',
     backgroundColor:'white',
     rotation:45});
+/*
   var mitochondria = d3.select('#my-svg1').select('#viewport').append(mitochondriaRenderingData.elementName)
   mitochondriaRenderingData.attributes.forEach(function(attribute) {
     mitochondria.attr(attribute.name, attribute.value);
   });
+  //*/
 
 
   var crossPlatformShapesInstance2 = Object.create(crossPlatformShapes);
@@ -145,11 +160,14 @@
       width:80,
       height:40,
       color:'purple',
+      containerSelector: '#viewport',
       backgroundColor:'white',
       rotation:45});
+    /*
     var rectangle3 = d3.select('#my-svg2').select('#viewport').append(rectangle3RenderingData.elementName)
     rectangle3RenderingData.attributes.forEach(function(attribute) {
       rectangle3.attr(attribute.name, attribute.value);
     });
+    //*/
   });
 </script>

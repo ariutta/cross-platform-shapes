@@ -5,7 +5,119 @@ crossPlatformShapes.svg.path = {
 
     return id;
   },
+  render: function(shapeName, data) {
+    var svgPathGenerator = this;
+    var targetImageSelection = this.targetImageSelection;
+    var availableMarkers = this.availableMarkers;
+    var crossPlatformShapesInstance = this.crossPlatformShapesInstance;
+    var attributeDependencyOrder = [
+      'color',
+      'markerStart',
+      'markerEnd'
+    ];
+    var canvasPathCommandToSvgPathCommandMappings = {
+      moveTo: 'M',
+      lineTo: 'L',
+      closePath: 'Z',
+      bezierCurveTo: 'C',
+      quadraticCurveTo: 'Q'
+    };
 
+    var shapeSelection = targetImageSelection.select(data.containerSelector).append('path');
+
+    var result = {};
+    var attributes = [];
+    result.elementName = 'path';
+
+    // TODO rewrite the path calculation code to not use the d3 path generators
+    var shapesUsingD3PathGenerators = [
+      'lineCurved',
+      'lineElbow',
+      'lineSegmented'
+    ];
+    var d = '';
+    if (shapesUsingD3PathGenerators.indexOf(shapeName) === -1) {
+      var pathSegments = crossPlatformShapes.pathCalculator[shapeName](data);
+      // the path segments are defined using the Canvas path command terms. The path commands used are only those
+      // that are common to both Canvas and SVG
+      pathSegments.forEach(function(pathSegment) {
+        d += canvasPathCommandToSvgPathCommandMappings[pathSegment.command];
+        d += pathSegment.points.join(',');
+      });
+    }
+    else {
+      d = crossPlatformShapes.pathCalculator[ shapeName ](data);
+    }
+    attributes.push({name: 'd', value: d});
+    shapeSelection.attr('d', d);
+
+
+    var backgroundColor = data.backgroundColor || 'transparent';
+    attributes.push({name: 'fill', value: backgroundColor});
+    shapeSelection.attr('fill', backgroundColor);
+
+    var color;
+
+    //*
+    var svgPathAttributeGenerator = {
+      id: function(idValue){
+        attributes.push({name: 'id', value: idValue});
+        shapeSelection.attr('id', idValue);
+      },
+      strokeDasharray: function(strokeDasharrayValue){
+        attributes.push({name: 'stroke-dasharray', value: strokeDasharrayValue});
+        shapeSelection.attr('stroke-dasharray', strokeDasharrayValue);
+      },
+      fillOpacity: function(fillOpacityValue){
+        attributes.push({name: 'fill-opacity', value: fillOpacityValue});
+        shapeSelection.attr('fill-opacity', fillOpacityValue);
+      },
+      color: function(colorValue){
+        color = colorValue;
+        attributes.push({name: 'color', value: colorValue});
+        attributes.push({name: 'stroke', value: colorValue});
+        shapeSelection.attr('stroke', colorValue);
+      },
+      markerStart: function(markerStartValue) {
+        crossPlatformShapesInstance.svg.marker.append(markerStartValue, 'start', color, function(markerId) {
+          attributes.push({name: 'marker-start', value: 'url(#' + markerId + ')'});
+          shapeSelection.attr('marker-start', 'url(#' + markerId + ')');
+        });
+      },
+      markerEnd: function(markerEndValue) {
+        crossPlatformShapesInstance.svg.marker.append(markerEndValue, 'end', color, function(markerId) {
+          attributes.push({name: 'marker-end', value: 'url(#' + markerId + ')'});
+          shapeSelection.attr('marker-end', 'url(#' + markerId + ')');
+        });
+      },
+      rotation: function(rotationValue) {
+        var transform = 'rotate(' + rotationValue + ',' + (data.x + data.width/2) + ',' + (data.y + data.height/2) + ')';
+        attributes.push({name: 'transform', value: transform});
+        shapeSelection.attr('transform', transform);
+      },
+      strokeWidth: function(strokeWidthValue) {
+        attributes.push({name: 'stroke-width', value: strokeWidthValue});
+        shapeSelection.attr('stroke-width', strokeWidthValue);
+      }
+    };
+
+    // These are generic attributes that can apply to any pathShape.
+    var attributeListItemName, attributeListItemValue;
+    var attributeList = d3.map(data).entries().sort(function(a, b) {
+      return attributeDependencyOrder.indexOf(a.key) - attributeDependencyOrder.indexOf(b.key);
+    });
+    attributeList.forEach(function(attributeListItem){
+      attributeListItemName = attributeListItem.key;
+      attributeListItemValue = attributeListItem.value;
+      if (svgPathAttributeGenerator.hasOwnProperty(attributeListItemName)) {
+        svgPathAttributeGenerator[attributeListItemName](attributeListItemValue);
+      }
+    });
+//*/
+
+    result.attributes = attributes;
+    return result;
+  },
   prepareForRendering: function(shapeName, data) {
     var svgPathGenerator = this;
     var availableMarkers = this.availableMarkers;

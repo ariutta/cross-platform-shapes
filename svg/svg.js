@@ -20,6 +20,8 @@ crossPlatformShapes.svg = {
       .attr('height', height)
       .attr('style', 'background-color:' + backgroundColor + '; ');
 
+      this.path.targetImageSelection = this.image.targetImageSelection = targetImageSelection;
+
       defs = targetImageSelection.append('defs')
       .attr('id', 'defs');
 
@@ -30,6 +32,7 @@ crossPlatformShapes.svg = {
     }
     else {
       targetImageSelection = this.targetImageSelection;
+      this.path.targetImageSelection = this.image.targetImageSelection = targetImageSelection;
       this.marker.targetImageSelectionDefs = this.targetImageSelection.select('defs');
       viewport = targetImageSelection.select('#viewport');
       if (!viewport[0][0]) {

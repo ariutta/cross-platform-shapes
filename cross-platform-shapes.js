@@ -10,7 +10,6 @@ window.crossPlatformShapes = {
     var targetSelection = d3.select(target);
     var format, targetImageSelection;
 
-
     if (targetTagName === 'div') {
       format = args.format;
       this[format].targetSelection = targetSelection;
@@ -74,7 +73,7 @@ window.crossPlatformShapes = {
     ];
     presetShapesNames.forEach(function(presetShapeName) {
       crossPlatformShapesInstance[presetShapeName] = function(data){
-        return crossPlatformShapesInstance[format].path.prepareForRendering(presetShapeName, data);
+        return crossPlatformShapesInstance[format].path.render(presetShapeName, data);
       };
     });
 
@@ -83,7 +82,7 @@ window.crossPlatformShapes = {
       crossPlatformShapesInstance[format].image.customShapes = customShapes;
       d3.map(customShapes).keys().forEach(function(customShapeName) {
         crossPlatformShapesInstance[customShapeName] = function(data){
-          return crossPlatformShapesInstance[format].image.prepareForRendering(customShapeName, data);
+          return crossPlatformShapesInstance[format].image.render(customShapeName, data);
         };
       });
     }
