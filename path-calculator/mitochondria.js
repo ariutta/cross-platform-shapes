@@ -8,7 +8,7 @@ crossPlatformShapes.pathCalculator.mitochondria = function(){
       height = data.height;
     var cx = x + width/2;
     var cy = y + height/2;
-    var outerEllipse = crossPlatformShapes.pathCalculator.oval.drawEllipse(cx, cy, width, height);
+    var outerEllipse = crossPlatformShapes.pathCalculator.ellipse.drawEllipse(cx, cy, width, height);
     var innerShape = 'M' + (x + 14.894899) + ',' + (y + 26.347357) +
       'c4.363817,-0.741571 3.827518,17.036169 8.182638,16.183825' +
       'c8.27347,0.030762 2.982006,-28.148991 9.899754,-28.336687' +

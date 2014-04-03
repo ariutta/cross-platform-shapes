@@ -48,8 +48,8 @@ window.crossPlatformShapes = {
       'lineStraight',
       'mimDegradation',
       'mitochondria',
-      'ovalDouble',
-      'oval',
+      'ellipseDouble',
+      'ellipse',
       'pentagon',
       'rectangle',
       'roundedRectangleDouble',
@@ -103,8 +103,8 @@ line-segmented
 line-straight
 mim-degradation
 mitochondria
-oval-double
-oval
+ellipse-double
+ellipse
 pentagon
 rectangle
 rounded-rectangle-double
@@ -139,8 +139,8 @@ lineSegmented
 lineStraight
 mimDegradation
 mitochondria
-ovalDouble
-oval
+ellipseDouble
+ellipse
 pentagon
 rectangle
 roundedRectangleDouble
