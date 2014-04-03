@@ -14,7 +14,7 @@ var jsSources = [
   'path-calculator/line-elbow.js',
   'path-calculator/line-segmented.js',
   'path-calculator/line-straight.js',
-  'path-calculator/mim-megradation.js',
+  'path-calculator/mim-degradation.js',
   'path-calculator/mitochondria.js',
   'path-calculator/ellipse-double.js',
   'path-calculator/ellipse.js',

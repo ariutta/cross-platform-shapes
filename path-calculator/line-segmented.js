@@ -9,5 +9,5 @@ crossPlatformShapes.pathCalculator.lineSegmented = function(data){
 
   var pathData = svgLine(data.points);
 
-  return attributes;
+  return pathData;
 };
