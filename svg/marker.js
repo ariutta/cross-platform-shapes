@@ -377,47 +377,53 @@ crossPlatformShapes.svg.marker = {
     markerData.mimInhibition = markerData.tBar;
     markerData.mimConversion = markerData.arrow;
 
-    var markerId = this.generateId(name, position, color);
-    if (availableMarkers[markerId]) {
-      callback(markerId);
-    }
-    else {
-      var marker = targetImageSelectionDefs.append('marker')
-      .attr('id', markerId)
-      .attr('orient', 'auto')
-      .attr('markerUnits', 'strokeWidth')
-      .attr('preserveAspectRatio', 'none')
-      .attr('refY', markerData[name].markerElement.markerHeight/2)
-      .attr('viewBox', '0 0 ' + markerData[name].markerElement.markerWidth + ' ' + markerData[name].markerElement.markerHeight);
-
-      d3.map(markerData[name].markerElement).entries().forEach(function(attribute) {
-        marker.attr(attribute.key, attribute.value);
-      });
-      if (position === 'end') {
-        marker.attr('refX', markerData[name].markerElement.markerWidth);
+    if (!!markerData[name]) {
+      var markerId = this.generateId(name, position, color);
+      var markerAttributeValue = 'url(#' + markerId + ')';
+      if (availableMarkers[markerId]) {
+        callback(markerAttributeValue);
       }
       else {
-        marker.attr('refX', 0);
-      }
+        var marker = targetImageSelectionDefs.append('marker')
+        .attr('id', markerId)
+        .attr('orient', 'auto')
+        .attr('markerUnits', 'strokeWidth')
+        .attr('preserveAspectRatio', 'none')
+        .attr('refY', markerData[name].markerElement.markerHeight/2)
+        .attr('viewBox', '0 0 ' + markerData[name].markerElement.markerWidth + ' ' + markerData[name].markerElement.markerHeight);
 
-      var markerContainer = marker.append('g')
-      .attr('id', 'g-' + markerId);
-
-      if (position === 'end') {
-        markerContainer.attr('transform', 'rotate(180, ' + markerData[name].markerElement.markerWidth/2 + ', ' + markerData[name].markerElement.markerHeight/2 + ')');
-      }
-
-      markerData[name].shapes.forEach(function(shape) {
-        var shapeSelection = markerContainer.append(shape.elementTag);
-        d3.map(shape).entries().forEach(function(attribute) {
-          if (attribute.key !== 'elementTag') {
-            shapeSelection.attr(attribute.key, attribute.value);
-          }
+        d3.map(markerData[name].markerElement).entries().forEach(function(attribute) {
+          marker.attr(attribute.key, attribute.value);
         });
-      });
+        if (position === 'end') {
+          marker.attr('refX', markerData[name].markerElement.markerWidth);
+        }
+        else {
+          marker.attr('refX', 0);
+        }
 
-      availableMarkers[markerId] = true;
-      callback(markerId);
+        var markerContainer = marker.append('g')
+        .attr('id', 'g-' + markerId);
+
+        if (position === 'end') {
+          markerContainer.attr('transform', 'rotate(180, ' + markerData[name].markerElement.markerWidth/2 + ', ' + markerData[name].markerElement.markerHeight/2 + ')');
+        }
+
+        markerData[name].shapes.forEach(function(shape) {
+          var shapeSelection = markerContainer.append(shape.elementTag);
+          d3.map(shape).entries().forEach(function(attribute) {
+            if (attribute.key !== 'elementTag') {
+              shapeSelection.attr(attribute.key, attribute.value);
+            }
+          });
+        });
+        availableMarkers[markerId] = true;
+        callback(markerAttributeValue);
+      }
+    }
+    else {
+      console.warn('Marker (arrowhead) named "' + name + '" is not available.');
+      callback('none');
     }
   }
 };

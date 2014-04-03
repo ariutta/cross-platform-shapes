@@ -79,15 +79,15 @@ crossPlatformShapes.svg.path = {
         shapeSelection.attr('stroke', colorValue);
       },
       markerStart: function(markerStartValue) {
-        crossPlatformShapesInstance.svg.marker.append(markerStartValue, 'start', color, function(markerId) {
-          attributes.push({name: 'marker-start', value: 'url(#' + markerId + ')'});
-          shapeSelection.attr('marker-start', 'url(#' + markerId + ')');
+        crossPlatformShapesInstance.svg.marker.append(markerStartValue, 'start', color, function(markerAttributeValue) {
+          //attributes.push({name: 'marker-start', value: 'url(#' + markerId + ')'});
+          shapeSelection.attr('marker-start', markerAttributeValue);
         });
       },
       markerEnd: function(markerEndValue) {
-        crossPlatformShapesInstance.svg.marker.append(markerEndValue, 'end', color, function(markerId) {
-          attributes.push({name: 'marker-end', value: 'url(#' + markerId + ')'});
-          shapeSelection.attr('marker-end', 'url(#' + markerId + ')');
+        crossPlatformShapesInstance.svg.marker.append(markerEndValue, 'end', color, function(markerAttributeValue) {
+          //attributes.push({name: 'marker-end', value: markerAttributeValue});
+          shapeSelection.attr('marker-end', markerAttributeValue);
         });
       },
       rotation: function(rotationValue) {
