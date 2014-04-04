@@ -25,10 +25,6 @@ crossPlatformShapes.svg.path = {
 
     var shapeSelection = targetImageSelection.select(data.containerSelector).append('path');
 
-    var result = {};
-    var attributes = [];
-    result.elementName = 'path';
-
     // TODO rewrite the path calculation code to not use the d3 path generators
     var shapesUsingD3PathGenerators = [
       'lineCurved',
@@ -56,7 +52,6 @@ crossPlatformShapes.svg.path = {
 
     var color;
 
-    //*
     var svgPathAttributeGenerator = {
       id: function(idValue){
         shapeSelection.attr('id', idValue);
@@ -102,52 +97,9 @@ crossPlatformShapes.svg.path = {
         svgPathAttributeGenerator[attributeListItemName](attributeListItemValue);
       }
     });
-//*/
 
-    result.attributes = attributes;
     if (!!callback) {
       callback(shapeSelection[0][0]);
     }
-    else {
-      return result;
-    }
   }
 };
-
-/*
-<marker id="src-shape-library-markers-t-bar-svg-end-default" preserveAspectRatio="none" viewBox="0 0 10 20" markerWidth="10" markerHeight="20" markerUnits="strokeWidth" orient="auto" refX="10" refY="10"><g id="g-src-shape-library-markers-t-bar-svg-end-default" class="board-fill-color default-stroke-color solid-stroke" transform="rotate(180, 5, 10)">
-
-        <!-- t-bar markers: vertical line; and extended drawing-board rect -->
-	
-	<rect stroke="none" x="0" y="9" width="8" height="2"></rect>
-	<line fill="none" stroke-width="1.8" x1="7" y1="0" x2="7" y2="20"></line>
-
-</g></marker>
-//*/
-
-/*
-  var myEdgeRenderingData = crossPlatformShapesInstance1.lineCurved({
-    id:'my-edge',
-    points:[{x:100,y:75},{x:1,y:190},{x:60,y:310},{x:100,y:325}],
-    color:'green',
-    markerEnd:'tBar'});
-  var myEdge = d3.select('svg').select('#viewport').append(myEdgeRenderingData.elementName)
-  myEdgeRenderingData.attributes.forEach(function(attribute) {
-    myEdge.attr(attribute.name, attribute.value);
-  });
-
-  var myNodeRenderingData = crossPlatformShapesInstance1.complex({
-    id:'my-node',
-    x:100,
-    y:300,
-    width:80,
-    height:50,
-    color:'brown',
-    backgroundColor:'white'});
-  var myNode = d3.select('svg').select('#viewport').append(myNodeRenderingData.elementName)
-  myNodeRenderingData.attributes.forEach(function(attribute) {
-    myNode.attr(attribute.name, attribute.value);
-  });
-d3.select('#my-edge').attr('fill', 'url(#gradient-for-my-edge)')
-d3.select('#edge2').attr('fill', 'url(#gradient-for-edge2)')
-//*/
