@@ -72,8 +72,8 @@ window.crossPlatformShapes = {
       'mimBranchingRight'
     ];
     presetShapesNames.forEach(function(presetShapeName) {
-      crossPlatformShapesInstance[presetShapeName] = function(data){
-        return crossPlatformShapesInstance[format].path.render(presetShapeName, data);
+      crossPlatformShapesInstance[presetShapeName] = function(data, callback){
+        return crossPlatformShapesInstance[format].path.render(presetShapeName, data, callback);
       };
     });
 
@@ -81,8 +81,8 @@ window.crossPlatformShapes = {
       crossPlatformShapesInstance.customShapes = customShapes;
       crossPlatformShapesInstance[format].image.customShapes = customShapes;
       d3.map(customShapes).keys().forEach(function(customShapeName) {
-        crossPlatformShapesInstance[customShapeName] = function(data){
-          return crossPlatformShapesInstance[format].image.render(customShapeName, data);
+        crossPlatformShapesInstance[customShapeName] = function(data, callback){
+          return crossPlatformShapesInstance[format].image.render(customShapeName, data, callback);
         };
       });
     }

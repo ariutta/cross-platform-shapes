@@ -1,5 +1,5 @@
 crossPlatformShapes.svg.image = {
-  render: function(shapeName, data){
+  render: function(shapeName, data, callback){
     var customShapes = this.customShapes;
     var result = {};
     var attributes = [];
@@ -44,6 +44,11 @@ crossPlatformShapes.svg.image = {
       attributes.push({name: 'transform', value: 'rotate(' + rotation + ',' + (data.x + data.width/2) + ',' + (data.y + data.height/2) + ')'});
     }
     result.attributes = attributes;
-    return result;
+    if (!!callback) {
+      callback(shapeSelection[0][0]);
+    }
+    else {
+      return result;
+    }
   }
 };
