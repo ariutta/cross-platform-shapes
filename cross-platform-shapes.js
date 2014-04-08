@@ -1,4 +1,4 @@
-window.crossPlatformShapes = {
+var crossPlatformShapes = {
   init: function(args, callback){
     var customShapes = args.customShapes;
     var crossPlatformShapesInstance = this;
