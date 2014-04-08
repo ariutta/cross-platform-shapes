@@ -236,10 +236,18 @@
       rotation:90});
     var triangleRenderingData = crossPlatformShapesInstance2.triangle({
       x:100,
-      y:80,
+      y:90,
       width:40,
       height:40,
       color:'purple',
+      containerSelector: '#viewport',
+      backgroundColor:'transparent'});
+    var hexagonRenderingData = crossPlatformShapesInstance2.hexagon({
+      x:100,
+      y:100,
+      width:40,
+      height:40,
+      color:'blue',
       containerSelector: '#viewport',
       backgroundColor:'transparent'});
   });
