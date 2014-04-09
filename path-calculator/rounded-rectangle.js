@@ -14,6 +14,6 @@ crossPlatformShapes.pathCalculator.roundedRectangle = function(data){
         {command: 'bezierCurveTo', points: [(x + width), (y + height - 10 + 5.43379), (x + width - 4.56621), (y + height), (x + width - 10), (y + height)]},
         {command: 'lineTo', points: [(x + 10), (y + height)]}, // move to the lower left corner, just before curve
         {command: 'bezierCurveTo', points: [(x + 10 - 5.43379), (y + height), (x), (y + height - 4.56621), (x), (y + height - 10)]},
-        {command: 'closePath', points: []}];
+        {command: 'lineTo', points: [(x), (y + 10)]}]; // move to the upper left corner, just before curve
   return pathData;
 };
