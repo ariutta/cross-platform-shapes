@@ -19,7 +19,7 @@ crossPlatformShapes.pathCalculator.pentagon = function(data){
     {command: 'lineTo', points: [x, (y- 0.19*height)]},
     {command: 'lineTo', points: [(x+ 0.62*width), y]},
     {command: 'lineTo', points: [(x+ width), (y+ 0.5*height)]},
-    {command: 'lineTo', points: [(x-0.38*width), (y + height)]},
+    {command: 'lineTo', points: [(x- 0.62*width), (y + height)]},
     {command: 'closePath', points: []}];
         /*{command: 'lineTo', points: [x, -' + 0.62*width + ',-' + 0.19*height +//*/
         
