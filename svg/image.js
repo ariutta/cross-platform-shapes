@@ -1,10 +1,11 @@
 crossPlatformShapes.svg.image = {
   render: function(shapeName, data, callback){
     var customShapes = this.customShapes;
-    var shapeSelection = targetImageSelection.select(data.containerSelector).append('image')
+    var shapeSelection = this.targetImageSelection.select(data.containerSelector).append('image')
     .attr('xlink:xlink:href', customShapes[shapeName].href)
     .attr('x', data.x || 0)
     .attr('y', data.y || 0)
+    .attr('preserveAspectRatio', 'none')
     .attr('width', data.width || 0)
     .attr('height', data.height || 0);
 

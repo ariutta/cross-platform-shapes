@@ -5,7 +5,7 @@ crossPlatformShapes.svg = {
       backgroundColor = args.backgroundColor || '#ffffff';
 
     var crossPlatformShapesInstance = this.crossPlatformShapesInstance;
-    var viewport, defs;
+    var viewport, defs, targetImageSelection;
     if (this.targetTagName !== 'svg') {
       var id = args.id || 'cross-platform-shape-svg';
       targetImageSelection = this.targetSelection.append('svg')
