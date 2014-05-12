@@ -100,6 +100,8 @@ crossPlatformShapes.svg.path = {
 
     if (!!callback) {
       callback(shapeSelection[0][0]);
+    } else {
+      return shapeSelection[0][0];
     }
   }
 };

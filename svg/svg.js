@@ -47,6 +47,8 @@ crossPlatformShapes.svg = {
 
     if (!!callback) {
       callback(viewport);
+    } else {
+      return viewport;
     }
   }
 };
