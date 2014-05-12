@@ -1,6 +1,6 @@
 {
   "name": "cross-platform-shapes",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Create shapes with Canvas, SVG and possibly other formats in the future.",
   "main": "Gruntfile.js",
   "directories": {},
