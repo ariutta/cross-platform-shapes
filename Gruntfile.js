@@ -165,7 +165,7 @@ grunt.initConfig({
     },
     buildcontrol: {
       options: {
-        dir: 'demos',
+        dir: 'dist',
         commit: true,
         push: true,
         message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
@@ -192,12 +192,6 @@ grunt.initConfig({
             return content.replace(/\.\.\/dist\/lib/g,'./lib');
           }
         }
-      },
-      pages: {
-        expand: true,
-        cwd: './dist/lib/',
-        src: ['**'],
-        dest: './demos/lib/',
       }
     }
   });
