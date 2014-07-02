@@ -64,7 +64,8 @@ grunt.initConfig({
     clean: {
       build: [distDir],
       tmp: ['markers.js'],
-      demoLibs: ['./demos/lib/']
+      demoLibs: ['./demos/lib/'],
+      index: ['./dist/index.html']
     },
     concat: {
         options: {
@@ -184,33 +185,34 @@ grunt.initConfig({
     },
     copy: {
       index: {
-        src: './demos/index.html',
+        src: ['./demos/index.html'],
         dest: './dist/index.html',
       },
-      demos: {
+      pages: {
         expand: true,
         cwd: './dist/lib/',
         src: ['**'],
         dest: './demos/lib/',
       }
+    },
+    replace: {
+      pages: {
+        src: ['./dist/*.html'],
+        overwrite: true,
+        replacements: [{
+            from: '../dist/lib',
+            to: './lib'
+          },
+          {
+            from: '../dist/plugins',
+            to: './plugins'
+        }]
+      }
     }
   });
 
-  // Load the plugin that provides the tasks.
-  grunt.loadNpmTasks("grunt-string-to-js");
-  grunt.loadNpmTasks("grunt-contrib-clean");
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks("grunt-git-describe");
-  grunt.loadNpmTasks('grunt-browserify');
-  grunt.loadNpmTasks('grunt-sync-pkg');
-  grunt.loadNpmTasks('grunt-concurrent');
-  grunt.loadNpmTasks('grunt-protractor-runner');
-  grunt.loadNpmTasks('grunt-build-control');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  //grunt.loadNpmTasks("grunt-net");
+  // These plugins provide necessary tasks.
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.registerTask('protractor-chrome', 'Run local tests for development', function() {
     grunt.config.set('protractor.chrome.options.args.specs', ['test/e2e/' + grunt.option('spec') + '.js']);
@@ -225,7 +227,6 @@ grunt.initConfig({
     grunt.task.run('protractor:firefox');
   });
   grunt.registerTask('protractor-e2e', ['concurrent:protractor_test']);
-
 
   grunt.registerTask('set_global', 'Set a global var.', function(name, val) {
     global[name] = val;
@@ -252,6 +253,9 @@ grunt.initConfig({
     grunt.option('spec', 'minimal');
     grunt.task.run('protractor-safari');
   });
+
+  // Build, create and publish gh-pages
+  grunt.registerTask('build-pages', ['build', 'copy', 'replace:pages', 'buildcontrol:pages', 'clean:index']);
 
   grunt.registerTask('test', 'Run extensive local tests', function(val) {
     grunt.option('spec', val);

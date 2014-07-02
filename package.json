@@ -1,6 +1,6 @@
 {
   "name": "cross-platform-shapes",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Create shapes with Canvas, SVG and possibly other formats in the future.",
   "main": "Gruntfile.js",
   "directories": {},
@@ -48,7 +48,9 @@
     "grunt-build-control": "~0.1.2",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-string-to-js": "0.0.3",
-    "temporary": "0.0.8"
+    "temporary": "0.0.8",
+    "grunt-replace": "~0.7.8",
+    "grunt-text-replace": "~0.3.12"
   },
   "dependencies": {}
 }
