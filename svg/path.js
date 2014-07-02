@@ -25,25 +25,14 @@ crossPlatformShapes.svg.path = {
 
     var shapeSelection = targetImageSelection.select(data.containerSelector).append('path');
 
-    // TODO rewrite the path calculation code to not use the d3 path generators
-    var shapesUsingD3PathGenerators = [
-      'lineCurved',
-      'lineElbow',
-      'lineSegmented'
-    ];
     var d = '';
-    if (shapesUsingD3PathGenerators.indexOf(shapeName) === -1) {
-      var pathSegments = crossPlatformShapes.pathCalculator[shapeName](data);
-      // the path segments are defined using the Canvas path command terms. The path commands used are only those
-      // that are common to both Canvas and SVG
-      pathSegments.forEach(function(pathSegment) {
-        d += canvasPathCommandToSvgPathCommandMappings[pathSegment.command];
-        d += pathSegment.points.join(',');
-      });
-    }
-    else {
-      d = crossPlatformShapes.pathCalculator[ shapeName ](data);
-    }
+    var pathSegments = crossPlatformShapes.pathCalculator[shapeName](data);
+    // the path segments are defined using the Canvas path command terms. The path commands used are only those
+    // that are common to both Canvas and SVG
+    pathSegments.forEach(function(pathSegment) {
+      d += canvasPathCommandToSvgPathCommandMappings[pathSegment.command];
+      d += pathSegment.points.join(',');
+    });
     shapeSelection.attr('d', d);
 
 

@@ -67,35 +67,23 @@
       }
     }
   });
-  var edge1RenderingData = crossPlatformShapesInstance1.lineStraight({
+  crossPlatformShapesInstance1.lineStraight({
     id:'tBar-and-t-bar',
     points:[{x:140,y:74},{x:230,y:300}],
     markerStart:'this-does-not-exist',
     color:'#00ff00',
     containerSelector: '#viewport',
     markerEnd:'arrow'});
-/*
-  var edge1 = d3.select('#my-svg1').select('#viewport').append(edge1RenderingData.elementName)
-  edge1RenderingData.attributes.forEach(function(attribute) {
-    edge1.attr(attribute.name, attribute.value);
-  });
-  //*/
 
-  var edge2RenderingData = crossPlatformShapesInstance1.lineCurved({
+  crossPlatformShapesInstance1.lineCurved({
     id:'edge2',
     points:[{x:180,y:50},{x:500,y:20},{x:290,y:294}],
     markerStart:'tBar',
     color:'red',
     containerSelector: '#viewport',
     markerEnd:'tBar'});
-/*
-  var edge2 = d3.select('#my-svg1').select('#viewport').append(edge2RenderingData.elementName)
-  edge2RenderingData.attributes.forEach(function(attribute) {
-    edge2.attr(attribute.name, attribute.value);
-  });
-  //*/
 
-  var rectangle1RenderingData = crossPlatformShapesInstance1.rectangle({
+  crossPlatformShapesInstance1.rectangle({
     id:'rectangle1',
     x:100,
     y:50,
@@ -105,14 +93,8 @@
     containerSelector: '#viewport',
     backgroundColor:'white',
     rotation:-15});
-/*
-  var rectangle1 = d3.select('#my-svg1').select('#viewport').append(rectangle1RenderingData.elementName)
-  rectangle1RenderingData.attributes.forEach(function(attribute) {
-    rectangle1.attr(attribute.name, attribute.value);
-  });
-  //*/
 
-  var rectangle2RenderingData = crossPlatformShapesInstance1.rectangle({
+  crossPlatformShapesInstance1.rectangle({
     id:'rectangle2',
     x:100,
     y:50,
@@ -121,14 +103,8 @@
     color:'black',
     containerSelector: '#viewport',
     backgroundColor:'white'});
-/*
-  var rectangle2 = d3.select('#my-svg1').select('#viewport').append(rectangle2RenderingData.elementName)
-  rectangle2RenderingData.attributes.forEach(function(attribute) {
-    rectangle2.attr(attribute.name, attribute.value);
-  });
-  //*/
 
-  var mitochondriaRenderingData = crossPlatformShapesInstance1.mitochondria({
+  crossPlatformShapesInstance1.mitochondria({
     x:200,
     y:300,
     width:160,
@@ -137,12 +113,6 @@
     containerSelector: '#viewport',
     backgroundColor:'white',
     rotation:45});
-/*
-  var mitochondria = d3.select('#my-svg1').select('#viewport').append(mitochondriaRenderingData.elementName)
-  mitochondriaRenderingData.attributes.forEach(function(attribute) {
-    mitochondria.attr(attribute.name, attribute.value);
-  });
-  //*/
 
   var crossPlatformShapesInstance2 = Object.create(crossPlatformShapes);
   crossPlatformShapesInstance2.init({
@@ -153,7 +123,7 @@
     height:600
   },
   function() {
-    var rectangle3RenderingData = crossPlatformShapesInstance2.rectangle({
+    crossPlatformShapesInstance2.rectangle({
       x:20,
       y:40,
       width:80,
@@ -162,7 +132,7 @@
       containerSelector: '#viewport',
       backgroundColor:'white',
       rotation:45});
-    var rectangle4RenderingData = crossPlatformShapesInstance2.rectangle({
+    crossPlatformShapesInstance2.rectangle({
       x:80,
       y:40,
       width:80,
@@ -170,7 +140,7 @@
       color:'black',
       containerSelector: '#viewport',
       backgroundColor:'transparent'});
-    var ellipse1RenderingData = crossPlatformShapesInstance2.ellipse({
+    crossPlatformShapesInstance2.ellipse({
       x:80,
       y:40,
       width:80,
@@ -178,7 +148,7 @@
       color:'orange',
       containerSelector: '#viewport',
       backgroundColor:'yellow'});
-    var ellipse2RenderingData = crossPlatformShapesInstance2.ellipseDouble({
+    crossPlatformShapesInstance2.ellipseDouble({
       x:200,
       y:80,
       width:80,
@@ -187,5 +157,19 @@
       containerSelector: '#viewport',
       backgroundColor:'orange',
       rotation:90});
+    crossPlatformShapesInstance2.lineCurved({
+      id:'edge3',
+      points:[{x:100,y:20},{x:200,y:0},{x:240,y:50}],
+      markerStart:'tBar',
+      color:'red',
+      containerSelector: '#viewport',
+      markerEnd:'tBar'});
+    crossPlatformShapesInstance2.lineElbow({
+      id:'edge4',
+      points:[{x:100,y:20,anchor:[0.5,0,0,-1]},{x:200,y:0},{x:240,y:50,anchor:[0.5,0,0,-1]}],
+      markerStart:'tBar',
+      color:'green',
+      containerSelector: '#viewport',
+      markerEnd:'tBar'});
   });
 </script>
