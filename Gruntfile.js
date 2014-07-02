@@ -246,7 +246,7 @@ grunt.initConfig({
   });
 
   // Build, create and publish gh-pages
-  grunt.registerTask('build-pages', ['build', 'copy', 'buildcontrol:pages', 'clean:index']);
+  grunt.registerTask('build-pages', ['build', 'copy', 'buildcontrol:pages']);
   //grunt.registerTask('build-pages', ['build', 'copy', 'replace:pages', 'buildcontrol:pages', 'clean:index']);
 
   grunt.registerTask('test', 'Run extensive local tests', function(val) {
