@@ -2,7 +2,6 @@
 crossPlatformShapes.pathCalculator.lineSegmented = function(data){
   'use strict';
 
-
   var points = data.points;
   var firstPoint = points[0];
 

@@ -9,6 +9,7 @@
   <div id="container" style="width: inherit; height: inherit;">
     <div id="diagram-container">
       <div>
+        <h3>Dark background</h3>
         <svg id="my-svg1" version="1.1" baseProfile="full" xmlns="http://www.w3.org/1999/xlink" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" width="50%" height="60%" style="display:inline" preserveAspectRatio="xMidYMid" xlink="http://www.w3.org/1999/xlink" ev="http://www.w3.org/2001/xml-events">
           <g>
             <desc>Demo for cross-platform-shapes library.</desc>
@@ -25,6 +26,8 @@
           <g id="viewport">
           </g>
         </svg>
+
+        <h3>Light background</h3>
         <svg id="my-svg2" version="1.1" baseProfile="full" xmlns="http://www.w3.org/1999/xlink" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" width="50%" height="25%" style="display:inline" preserveAspectRatio="xMidYMid" xlink="http://www.w3.org/1999/xlink" ev="http://www.w3.org/2001/xml-events">
           <g>
             <desc>Demo for cross-platform-shapes library.</desc>
@@ -116,8 +119,7 @@
 
   var crossPlatformShapesInstance2 = Object.create(crossPlatformShapes);
   crossPlatformShapesInstance2.init({
-    targetSelector:'#diagram-container',
-    id: 'my-svg2',
+    targetSelector:'#my-svg2',
     format: 'svg',
     width:600,
     height:600
@@ -157,19 +159,25 @@
       containerSelector: '#viewport',
       backgroundColor:'orange',
       rotation:90});
-    crossPlatformShapesInstance2.lineCurved({
-      id:'edge3',
-      points:[{x:100,y:20},{x:200,y:0},{x:240,y:50}],
-      markerStart:'tBar',
-      color:'red',
-      containerSelector: '#viewport',
-      markerEnd:'tBar'});
-    crossPlatformShapesInstance2.lineElbow({
+    crossPlatformShapesInstance2.lineSegmented({
       id:'edge4',
       points:[{x:100,y:20,anchor:[0.5,0,0,-1]},{x:200,y:0},{x:240,y:50,anchor:[0.5,0,0,-1]}],
-      markerStart:'tBar',
+      color:'purple',
+      containerSelector: '#viewport',
+      markerEnd:'arrow'});
+
+    crossPlatformShapesInstance2.lineElbow({
+      id:'edge5',
+      points:[{x:100,y:20,anchor:[0.5,0,0,-1]},{x:200,y:0},{x:240,y:50,anchor:[0.5,0,0,-1]}],
       color:'green',
       containerSelector: '#viewport',
-      markerEnd:'tBar'});
+      markerEnd:'arrow'});
+
+    crossPlatformShapesInstance2.lineCurved({
+      id:'edge6',
+      points:[{x:100,y:20,anchor:[0.5,0,0,-1]},{x:200,y:0},{x:240,y:50,anchor:[0.5,0,0,-1]}],
+      color:'red',
+      containerSelector: '#viewport',
+      markerEnd:'arrow'});
   });
 </script>
