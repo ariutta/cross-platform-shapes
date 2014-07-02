@@ -187,26 +187,17 @@ grunt.initConfig({
       index: {
         src: ['./demos/index.html'],
         dest: './dist/index.html',
+        options: {
+          process: function (content, srcpath) {
+            return content.replace(/\.\.\/dist\/lib/g,'./lib');
+          }
+        }
       },
       pages: {
         expand: true,
         cwd: './dist/lib/',
         src: ['**'],
         dest: './demos/lib/',
-      }
-    },
-    replace: {
-      pages: {
-        src: ['./dist/*.html'],
-        overwrite: true,
-        replacements: [{
-            from: '../dist/lib',
-            to: './lib'
-          },
-          {
-            from: '../dist/plugins',
-            to: './plugins'
-        }]
       }
     }
   });
@@ -255,7 +246,8 @@ grunt.initConfig({
   });
 
   // Build, create and publish gh-pages
-  grunt.registerTask('build-pages', ['build', 'copy', 'replace:pages', 'buildcontrol:pages', 'clean:index']);
+  grunt.registerTask('build-pages', ['build', 'copy', 'buildcontrol:pages', 'clean:index']);
+  //grunt.registerTask('build-pages', ['build', 'copy', 'replace:pages', 'buildcontrol:pages', 'clean:index']);
 
   grunt.registerTask('test', 'Run extensive local tests', function(val) {
     grunt.option('spec', val);
