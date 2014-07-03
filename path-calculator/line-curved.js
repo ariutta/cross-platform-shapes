@@ -3,17 +3,55 @@ crossPlatformShapes.pathCalculator.lineCurved = function(data){
   'use strict';
 
   var catmullRomPoints = data.points;
-  var firstCatmullRomPoint = catmullRomPoints[0];
-  var pathData = [{command: 'moveTo', points: [firstCatmullRomPoint.x, firstCatmullRomPoint.y]}];
+  var pointCount = catmullRomPoints.length;
 
-  for (var i = 0, iLen = catmullRomPoints.length; iLen - 1 > i; i++) {
+  var firstCatmullRomPointWithNoOffset = catmullRomPoints[0];
+  var pathData = [{command: 'moveTo', points: [firstCatmullRomPointWithNoOffset.x, firstCatmullRomPointWithNoOffset.y]}];
+  /*
+
+  var markerStart = data.markerStart;
+  if (!!markerStart && firstCatmullRomPointWithNoOffset.anchor && typeof(firstCatmullRomPointWithNoOffset.anchor[2]) !== 'undefined' && typeof(firstCatmullRomPointWithNoOffset.anchor[3]) !== 'undefined') {
+    var firstCatmullRomPointWithOffset = catmullRomPoints[0];
+    var firstOffset;
+    var firstMarkerData = crossPlatformShapes.pathCalculator.markerData[markerStart];
+    if (!!firstMarkerData) {
+      firstOffset = firstMarkerData.markerHeight;
+    } else {
+      firstOffset = 12;
+    }
+    firstCatmullRomPointWithOffset.x = firstCatmullRomPointWithOffset.anchor[2] * firstOffset + firstCatmullRomPointWithOffset.x;
+    firstCatmullRomPointWithOffset.y = firstCatmullRomPointWithOffset.anchor[3] * firstOffset + firstCatmullRomPointWithOffset.y;
+    pathData.push({command: 'lineTo', points: [firstCatmullRomPointWithOffset.x, firstCatmullRomPointWithOffset.y]});
+  }
+
+  var lastCatmullRomPointWithNoOffset = catmullRomPoints[pointCount - 1];
+  var lastSegment = [];
+
+  var markerEnd = data.markerEnd;
+  if (!!markerEnd && lastCatmullRomPointWithNoOffset.anchor && typeof(lastCatmullRomPointWithNoOffset.anchor[2]) !== 'undefined' && typeof(lastCatmullRomPointWithNoOffset.anchor[3]) !== 'undefined') {
+    lastSegment.push({command: 'lineTo', points: [lastCatmullRomPointWithNoOffset.x, lastCatmullRomPointWithNoOffset.y]});
+
+    var lastCatmullRomPointWithOffset = catmullRomPoints[pointCount - 1];
+    var lastOffset;
+    var lastMarkerData = crossPlatformShapes.pathCalculator.markerData[markerEnd];
+    if (!!lastMarkerData) {
+      lastOffset = lastMarkerData.markerHeight;
+    } else {
+      lastOffset = 12;
+    }
+    lastCatmullRomPointWithOffset.x = lastCatmullRomPointWithOffset.anchor[2] * lastOffset + lastCatmullRomPointWithOffset.x;
+    lastCatmullRomPointWithOffset.y = lastCatmullRomPointWithOffset.anchor[3] * lastOffset + lastCatmullRomPointWithOffset.y;
+  }
+  //*/
+
+  for (var i = 0; pointCount - 1 > i; i++) {
     var p = [];
     if ( i === 0 ) {
       p.push( {x: parseFloat(catmullRomPoints[ i ].x), y: parseFloat(catmullRomPoints[ i ].y)} );
       p.push( {x: parseFloat(catmullRomPoints[ i ].x), y: parseFloat(catmullRomPoints[ i ].y)} );
       p.push( {x: parseFloat(catmullRomPoints[ i + 1 ].x), y: parseFloat(catmullRomPoints[ i + 1 ].y)} );
       p.push( {x: parseFloat(catmullRomPoints[ i + 2 ].x), y: parseFloat(catmullRomPoints[ i + 2 ].y)} );
-    } else if ( i === iLen - 2 ) {
+    } else if ( i === pointCount - 2 ) {
       p.push( {x: parseFloat(catmullRomPoints[ i - 1 ].x), y: parseFloat(catmullRomPoints[ i - 1 ].y)} );
       p.push( {x: parseFloat(catmullRomPoints[ i ].x), y: parseFloat(catmullRomPoints[ i ].y)} );
       p.push( {x: parseFloat(catmullRomPoints[ i + 1 ].x), y: parseFloat(catmullRomPoints[ i + 1 ].y)} );
@@ -39,5 +77,6 @@ crossPlatformShapes.pathCalculator.lineCurved = function(data){
     pathData.push({command: 'bezierCurveTo', points: bezierPoints});
   }
 
+  //pathData = pathData.concat(lastSegment);
   return pathData;
 };

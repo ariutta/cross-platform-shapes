@@ -255,11 +255,26 @@
       containerSelector: '#viewport',
       markerEnd:'arrow'});
 
-    crossPlatformShapesInstance2.lineCurved({
+    crossPlatformShapesInstance2.lineElbow({
       id:'edge6',
-      points:[{x:100,y:20,anchor:[0.5,0,0,-1]},{x:200,y:0},{x:240,y:50,anchor:[0.5,0,0,-1]}],
-      color:'red',
+      points:[{x:100,y:20,anchor:[0.5,0,0,-1]},{x:300,y:0},{x:500,y:30},{x:460,y:60,anchor:[1,0.5,1,0]}],
+      color:'black',
       containerSelector: '#viewport',
       markerEnd:'arrow'});
+
+    crossPlatformShapesInstance2.lineCurved({
+      id:'edge7',
+      points:[{x:100,y:20,anchor:[0.5,0,0,-1]},{x:300,y:0},{x:500,y:30},{x:460,y:60,anchor:[1,0.5,1,0]}],
+      color:'blue',
+      containerSelector: '#viewport',
+      markerEnd:'arrow'});
+
+    crossPlatformShapesInstance2.lineElbow({
+      id:'edge8',
+      points:[{x:10,y:50,anchor:[0.5,0,0,1]},{x:460,y:200,anchor:[0,0.5,-1,0]}],
+      color:'black',
+      containerSelector: '#viewport',
+      markerEnd:'arrow'});
+
   });
 </script>

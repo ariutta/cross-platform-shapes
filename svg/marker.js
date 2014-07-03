@@ -10,13 +10,10 @@ crossPlatformShapes.svg.marker = {
     var targetImageSelectionDefs = this.targetImageSelectionDefs;
     var backgroundColor = this.backgroundColor;
 
-    // TODO move at least some of this code into pathCalculator
+    // TODO: look at whether it makes sense to have some of the marker description code here and some in pathCalculator
+    // NOTE: if you add a new marker, make sure to add the data here and in pathCalculator
     var markerData = {
       arrow: {
-        markerElement: {
-          markerWidth:12,
-          markerHeight:12
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -36,10 +33,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimBinding: {
-        markerElement: {
-          markerWidth:12,
-          markerHeight:12
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -59,10 +52,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimNecessaryStimulation: {
-        markerElement: {
-          markerWidth:16,
-          markerHeight:12
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -102,10 +91,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimStimulation: {
-        markerElement: {
-          markerWidth:12,
-          markerHeight:12
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -135,10 +120,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimModification: {
-        markerElement: {
-          markerWidth:12,
-          markerHeight:12
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -158,10 +139,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimCatalysis: {
-        markerElement: {
-          markerWidth:12,
-          markerHeight:12
-        },
         shapes: [
           {
             elementTag: 'circle',
@@ -175,10 +152,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimCleavage: {
-        markerElement: {
-          markerWidth:20,
-          markerHeight:30
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -211,10 +184,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimCovalentBond: {
-        markerElement: {
-          markerWidth:12,
-          markerHeight:12
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -229,10 +198,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimTranscriptionTranslation: {
-        markerElement: {
-          markerWidth:20,
-          markerHeight:24
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -273,10 +238,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimGap: {
-        markerElement: {
-          markerWidth:12,
-          markerHeight:12
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -290,10 +251,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimBranchingLeft: { // TODO: this is just a copy of arrow. it needs to be updated.
-        markerElement: {
-          markerWidth:12,
-          markerHeight:12
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -317,10 +274,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       mimBranchingRight: { // TODO: this is just a copy of arrow. it needs to be updated.
-        markerElement: {
-          markerWidth:12,
-          markerHeight:12
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -344,10 +297,6 @@ crossPlatformShapes.svg.marker = {
         ]
       },
       tBar: {
-        markerElement: {
-          markerWidth:10,
-          markerHeight:20
-        },
         shapes: [
           {
             elementTag: 'rect',
@@ -377,7 +326,10 @@ crossPlatformShapes.svg.marker = {
     markerData.mimInhibition = markerData.tBar;
     markerData.mimConversion = markerData.arrow;
 
+
     if (!!markerData[name]) {
+      markerData[name].markerElement = crossPlatformShapes.pathCalculator.markerData[name];
+
       var markerId = this.generateId(name, position, color);
       var markerAttributeValue = 'url(#' + markerId + ')';
       if (availableMarkers[markerId]) {
