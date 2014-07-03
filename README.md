@@ -1,4 +1,4 @@
-cross-platform-shapes (pre-release)
+cross-platform-shapes
 =====================
 
 JS helper library for creating shapes in SVG, Canvas and possibly other formats in the future.
@@ -11,12 +11,18 @@ JS helper library for creating shapes in SVG, Canvas and possibly other formats 
 [D3.js](http://www.d3js.org)
 
 # Installation
-1) Add script elements to your page, like in [the demo](https://github.com/ariutta/cross-platform-shapes/blob/master/index.html)
+1) Add script elements to your page:
+
+```HTML
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="http://ariutta.github.io/cross-platform-shapes/lib/cross-platform-shapes/js/cross-platform-shapes.min.js"></script>
+```
+
 2) Initialize the library:
 
 ```JS
-  var crossPlatformShapeInstance = Object.create(crossPlatformShapes);
-  crossPlatformShapeInstance.init({
+  var crossPlatformShapesInstance1 = Object.create(crossPlatformShapes);
+  crossPlatformShapesInstance1.init({
     targetImageSelector:'#my-svg',
     customShapes: { // optional
       arc: {
