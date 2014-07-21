@@ -69,22 +69,6 @@
       }
     }
   });
-  crossPlatformShapesInstance1.lineStraight({
-    id:'tBar-and-t-bar',
-    points:[{x:140,y:74},{x:230,y:300}],
-    markerStart:'this-does-not-exist',
-    color:'#00ff00',
-    containerSelector: '#viewport',
-    markerEnd:'arrow'});
-
-  crossPlatformShapesInstance1.lineCurved({
-    id:'edge2',
-    points:[{x:180,y:50},{x:500,y:20},{x:290,y:294}],
-    markerStart:'tBar',
-    color:'red',
-    containerSelector: '#viewport',
-    markerEnd:'tBar'});
-
   crossPlatformShapesInstance1.rectangle({
     id:'rectangle1',
     x:100,
@@ -106,15 +90,6 @@
     containerSelector: '#viewport',
     backgroundColor:'white'});
 
-  crossPlatformShapesInstance1.mitochondria({
-    x:200,
-    y:300,
-    width:160,
-    height:80,
-    color:'purple',
-    containerSelector: '#viewport',
-    backgroundColor:'white',
-    rotation:45});
 
   var crossPlatformShapesInstance2 = crossPlatformShapes.init({
     targetSelector:'#my-svg2',
@@ -131,56 +106,15 @@
     containerSelector: '#viewport',
     backgroundColor:'white',
     rotation:45});
-  crossPlatformShapesInstance2.rectangle({
-    x:80,
-    y:40,
-    width:80,
-    height:40,
-    color:'black',
+    
+  crossPlatformShapesInstance1.rectangle({
+    id:'rectangle11',
+    x:150,
+    y:70,
+    width:70,
+    height:20,
+    color:'blue',
     containerSelector: '#viewport',
-    backgroundColor:'transparent'});
-  crossPlatformShapesInstance2.ellipse({
-    x:80,
-    y:40,
-    width:80,
-    height:40,
-    color:'orange',
-    containerSelector: '#viewport',
-    backgroundColor:'yellow'});
-  crossPlatformShapesInstance2.ellipseDouble({
-    x:200,
-    y:80,
-    width:80,
-    height:40,
-    color:'red',
-    containerSelector: '#viewport',
-    backgroundColor:'orange',
-    rotation:90});
-  crossPlatformShapesInstance2.lineSegmented({
-    id:'edge4',
-    points:[{x:100,y:20,anchor:[0.5,0,0,-1]},{x:200,y:0},{x:240,y:50,anchor:[0.5,0,0,-1]}],
-    color:'purple',
-    containerSelector: '#viewport',
-    markerEnd:'arrow'});
-
-  crossPlatformShapesInstance2.lineElbow({
-    id:'edge5',
-    points:[{x:100,y:20,anchor:[0.5,0,0,-1]},{x:200,y:0},{x:240,y:50,anchor:[0.5,0,0,-1]}],
-    color:'green',
-    containerSelector: '#viewport',
-    markerEnd:'arrow'});
-
-  crossPlatformShapesInstance2.lineCurved({
-    id:'edge6',
-    points:[{x:100,y:20,anchor:[0.5,0,0,-1]},{x:200,y:0},{x:240,y:50,anchor:[0.5,0,0,-1]}],
-    color:'red',
-    containerSelector: '#viewport',
-    markerEnd:'arrow'});
-
-  crossPlatformShapesInstance2.lineElbow({
-    id:'edge7',
-    points:[{x:234.40949467962844,y:233.25047693706875,anchor:[0.5,0,0,-1]},{x:435.0991555682924,y:127.11562614433547,anchor:[0,0.5,-1,0]}],
-    color:'black',
-    containerSelector: '#viewport',
-    markerEnd:'arrow'});
+    backgroundColor:'yellow',
+    rotation:15});
 </script>

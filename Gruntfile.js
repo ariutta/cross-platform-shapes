@@ -1,4 +1,34 @@
-var tmp = require('temporary');
+var tmp = require('temporary')
+  , fs = require('fs')
+  ;
+
+var presetShapeFileNames = fs.readdirSync('./lib/preset-shapes')
+  .filter(function(fileName) {
+    // we only want the shapes, not the "class" definition file
+    return fileName.substring(fileName.length - 3) === '.js' && fileName.indexOf('preset-shapes') === -1;
+  })
+  .map(function(fileName) {
+    return fileName.replace('.js', '');
+  });
+
+var automaticShapeGenerationWarningString = '  // These shapes are automatically added to this file based on the contents of this directory. See Gruntfile.js.\n';
+
+var presetShapeNameRequireString = 'var presetShapes = {\n';
+presetShapeNameRequireString += automaticShapeGenerationWarningString;
+presetShapeFileNames.forEach(function(presetShapeName) {
+  presetShapeNameRequireString += '  ' + presetShapeName + ': require(\'./' + presetShapeName + '\'),\n';
+});
+
+var presetShapesFile = fs.readFileSync('./lib/preset-shapes/preset-shapes.js', {encoding: 'utf8'});
+
+// get rid of first line with module.exports
+presetShapesFile = presetShapesFile.replace(/^var\ presetShapes\ =\ {.*\n/, '');
+// get rid of warning so it isn't duplicated
+presetShapesFile = presetShapesFile.replace(automaticShapeGenerationWarningString, '');
+// get rid of old shape requires
+presetShapesFile = presetShapesFile.replace(/[^|\n].*((\w)*: ).*require\(.*\n/g, '');
+presetShapesFile =  presetShapeNameRequireString + presetShapesFile;
+fs.writeFileSync('./lib/preset-shapes/preset-shapes.js', presetShapesFile);
 
 var jsSources = [
   'cross-platform-shapes.js',
@@ -60,6 +90,28 @@ var packageJson = grunt.file.readJSON("package.json"),
 // ----------
 // Project configuration.
 grunt.initConfig({
+  browserify: {
+    dev: {
+      files: {
+        'dist/lib/cross-platform-shapes/js/cross-platform-shapes.min.js': './index.js'
+      },
+      options: {
+        bundleOptions: {debug: true}
+      , transform: ['deglobalify', 'brfs']
+      }
+    },
+    build: {
+      files: {
+        'dist/lib/cross-platform-shapes/js/cross-platform-shapes.js': './index.js'
+      },
+      // src: [srcDir + 'js/cross-platform-shapes.js'],
+      // dest: distLibDir + 'cross-platform-shapes/js/cross-platform-shapes.js',
+      options: {
+        bundleOptions: {}
+      , transform: ['deglobalify', 'brfs']
+      }
+    }
+  },
     pkg: packageJson,
     clean: {
       build: [distDir],
@@ -92,6 +144,13 @@ grunt.initConfig({
       }
     },
     watch: {
+      browserify: {
+        files: ['./index.js','./lib/**/*.js'],
+        tasks: ['browserify:dev'],
+        options: {
+          livereload: true
+        }
+      },
       scripts: {
         files: [ "Gruntfile.js", "./src/**/*.js" ],
         tasks: ['test-min', 'quick-build'],
@@ -125,8 +184,20 @@ grunt.initConfig({
       }
     },
     concurrent: {
-      protractor_test: ['protractor-chrome', 'protractor-firefox']
+      dev: {
+        tasks: ['nodemon', 'watch:browserify']
+      }
+      //protractor_test: ['protractor-chrome', 'protractor-firefox'],
       //protractor_test: ['protractor-chrome', 'protractor-safari', 'protractor-firefox']
+    },
+    nodemon: {
+      dev: {
+        script: 'server.js',
+        options: {
+          ignore: ['node_modules/**'],
+          watch: ['server']
+        }
+      }
     },
     protractor: {
       options: {
@@ -226,6 +297,10 @@ grunt.initConfig({
     grunt.config.set(name, val);
   });
 
+
+  // Live development
+  grunt.registerTask('dev', 'Live Browserify', ['browserify:dev', 'concurrent:dev']);
+
   // build 
   grunt.registerTask('build', ['sync', 'str2js', 'clean:build', 'git-describe', 'jshint:beforeconcat', 'concat', 'jshint:afterconcat', 'uglify', 'clean:demoLibs', 'copy', 'clean:tmp']);
   //grunt.registerTask('build', ['sync', 'str2js', 'clean:build', 'git-describe', 'jshint:beforeconcat', 'concat', 'jshint:afterconcat', 'uglify', 'copy', 'clean:tmp']);
@@ -249,5 +324,5 @@ grunt.initConfig({
   });
 
   // Default task(s).
-  grunt.registerTask('default', ['build']);
+  grunt.registerTask('default', ['dev']);
 };

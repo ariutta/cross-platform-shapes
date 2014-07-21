@@ -33,7 +33,7 @@
     "grunt-contrib-clean": "~0.5.0",
     "grunt-git-describe": "~2.3.2",
     "utilities": "latest",
-    "grunt-browserify": "~1.2.11",
+    "grunt-browserify": "~2.1.3",
     "jasmine-runner": "~0.2.9",
     "protractor": "~0.15.0",
     "express": "~3.4.7",
@@ -48,7 +48,14 @@
     "grunt-build-control": "~0.1.2",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-string-to-js": "0.0.3",
-    "temporary": "0.0.8"
+    "temporary": "0.0.8",
+    "browserify": "~2.36.1",
+    "deglobalify": "~0.2.0",
+    "brfs": "~1.1.2",
+    "nodemon": "~1.2.1",
+    "grunt-nodemon": "~0.3.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "lodash": "~2.4.1"
+  }
 }
