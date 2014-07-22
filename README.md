@@ -21,8 +21,7 @@ JS helper library for creating shapes in SVG, Canvas and possibly other formats 
 2) Initialize the library:
 
 ```JS
-  var crossPlatformShapesInstance1 = Object.create(crossPlatformShapes);
-  crossPlatformShapesInstance1.init({
+  var crossPlatformShapesInstance1 = crossPlatformShapes.getInstance({
     targetImageSelector:'#my-svg',
     customShapes: { // optional
       arc: {
@@ -66,7 +65,7 @@ Canvas 'Image()' call. Otherwise, it will return the parameters for an
 SVG or Canvas path.
 
 The image format (SVG or Canvas) is determined based on the tagName of the
-targetImage referenced in the init() call.
+targetImage referenced in the getInstance() call.
 
 If you specify a marker (arrowhead) for an edge shape, the SVG version will check for
 whether that marker is available in the defs section of the SVG. If not, it will add
