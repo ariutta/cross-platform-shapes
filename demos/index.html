@@ -54,7 +54,7 @@
 <script src="../dist/lib/cross-platform-shapes/js/cross-platform-shapes.min.js"></script>
 
 <script>
-  var crossPlatformShapesInstance1 = crossPlatformShapes.init({
+  var crossPlatformShapesInstance1 = crossPlatformShapes.getInstance({
     targetSelector:'#my-svg1',
     backgroundColor: 'black',
     customShapes: { // optional
@@ -116,7 +116,7 @@
     backgroundColor:'white',
     rotation:45});
 
-  var crossPlatformShapesInstance2 = crossPlatformShapes.init({
+  var crossPlatformShapesInstance2 = crossPlatformShapes.getInstance({
     targetSelector:'#my-svg2',
     format: 'svg',
     width:600,

@@ -30,52 +30,6 @@ presetShapesFile = presetShapesFile.replace(/[^|\n].*((\w)*: ).*require\(.*\n/g,
 presetShapesFile =  presetShapeNameRequireString + presetShapesFile;
 fs.writeFileSync('./lib/preset-shapes/preset-shapes.js', presetShapesFile);
 
-var jsSources = [
-  'cross-platform-shapes.js',
-  'path-calculator/path-calculator.js',
-  'path-calculator/arc.js',
-  'path-calculator/arrow.js',
-  'path-calculator/brace.js',
-  'path-calculator/complex.js',
-  'path-calculator/endoplasmic-reticulum.js',
-  'path-calculator/golgi-apparatus.js',
-  'path-calculator/hexagon.js',
-  'path-calculator/line-curved.js',
-  'path-calculator/line-elbow.js',
-  'path-calculator/line-segmented.js',
-  'path-calculator/line-straight.js',
-  'path-calculator/mim-degradation.js',
-  'path-calculator/mitochondria.js',
-  'path-calculator/ellipse-double.js',
-  'path-calculator/ellipse.js',
-  'path-calculator/pentagon.js',
-  'path-calculator/rectangle.js',
-  'path-calculator/rounded-rectangle-double.js',
-  'path-calculator/rounded-rectangle.js',
-  'path-calculator/sarcoplasmic-reticulum.js',
-  'path-calculator/triangle.js',
-  'path-calculator/mim-secessary-stimulation.js',
-  'path-calculator/mim-binding.js',
-  'path-calculator/mim-conversion.js',
-  'path-calculator/mim-stimulation.js',
-  'path-calculator/mim-modification.js',
-  'path-calculator/mim-catalysis.js',
-  'path-calculator/mim-inhibition.js',
-  'path-calculator/mim-cleavage.js',
-  'path-calculator/mim-covalentBond.js',
-  'path-calculator/mim-transcription-translation.js',
-  'path-calculator/mim-gap.js',
-  'path-calculator/t-bar.js',
-  'path-calculator/mim-branching-left.js',
-  'path-calculator/mim-branching-right.js',
-  'custom-shapes.js',
-  'svg/svg.js',
-  'svg/image.js',
-  'svg/marker.js',
-  'svg/path.js',
-  'canvas/canvas.js'
-];
-
 var specFileName;
 
 var tmpDir = new tmp.Dir().path;
@@ -83,64 +37,48 @@ var tmpDir = new tmp.Dir().path;
 module.exports = function(grunt) {
 
 // ----------
-var packageJson = grunt.file.readJSON("package.json"),
-    distDir = "./dist/",
-    distLibDir = distDir + "lib/";
+var packageJson = grunt.file.readJSON("package.json");
 
 // ----------
 // Project configuration.
 grunt.initConfig({
-  browserify: {
-    dev: {
-      files: {
-        'dist/lib/cross-platform-shapes/js/cross-platform-shapes.min.js': './index.js'
+    browserify: {
+      //exclude: 'lodash',
+      dev: {
+        files: {
+          'dist/lib/cross-platform-shapes/js/cross-platform-shapes.min.js': './index.js'
+        },
+        options: {
+          bundleOptions: {debug: true}
+        , transform: ['deglobalify', 'brfs']
+        }
       },
-      options: {
-        bundleOptions: {debug: true}
-      , transform: ['deglobalify', 'brfs']
+      build: {
+        files: {
+          'dist/lib/cross-platform-shapes/js/cross-platform-shapes.js': './index.js'
+        },
+        // src: [srcDir + 'js/cross-platform-shapes.js'],
+        // dest: distLibDir + 'cross-platform-shapes/js/cross-platform-shapes.js',
+        options: {
+          bundleOptions: {}
+        , transform: ['deglobalify', 'brfs']
+        }
       }
     },
-    build: {
-      files: {
-        'dist/lib/cross-platform-shapes/js/cross-platform-shapes.js': './index.js'
-      },
-      // src: [srcDir + 'js/cross-platform-shapes.js'],
-      // dest: distLibDir + 'cross-platform-shapes/js/cross-platform-shapes.js',
-      options: {
-        bundleOptions: {}
-      , transform: ['deglobalify', 'brfs']
-      }
-    }
-  },
     pkg: packageJson,
     clean: {
-      build: [distDir],
-      tmp: ['markers.js'],
+      build: ['./dist/'],
+      //tmp: ['markers.js'],
       demoLibs: ['./demos/lib/'],
       index: ['./dist/index.html']
-    },
-    concat: {
-        options: {
-          separator: '\n\n',
-          banner: "/* <%= pkg.name %> <%= pkg.version %>\n" +
-              "Built on <%= grunt.template.today('yyyy-mm-dd') %>\n" +
-              //"//! Git commit: <%= gitInfo %>\n" +
-              "https://github.com/ariutta/cross-platform-shapes\n" +
-              "License: http://www.apache.org/licenses/LICENSE-2.0/ */\n\n",
-          process: true
-        },
-        crossPlatformShapes: {
-            src:  [ '<banner>', 'markers.js' ].concat(jsSources),
-            dest: tmpDir + 'cross-platform-shapes/js/cross-platform-shapes.js'
-        }
     },
     uglify: {
       options: {
         mangle: false
       },
       crossPlatformShapes: {
-        src: [ tmpDir + 'cross-platform-shapes/js/cross-platform-shapes.js' ],
-        dest: distLibDir + 'cross-platform-shapes/js/cross-platform-shapes.min.js'
+        src: [ 'dist/lib/cross-platform-shapes/js/cross-platform-shapes.js' ],
+        dest: 'dist/lib/cross-platform-shapes/js/cross-platform-shapes.min.js'
       }
     },
     watch: {
@@ -170,12 +108,14 @@ grunt.initConfig({
       options: {
         jshintrc: '.jshintrc'
       },
-      beforeconcat: jsSources,
-      afterconcat: [ distLibDir + 'cross-platform-shapes/js/cross-platform-shapes.min.js' ]
+      beforeconcat: ['./index.js','./lib/**/*.js'],
+      afterconcat: [ 'dist/lib/cross-platform-shapes/js/cross-platform-shapes.min.js' ]
     },
+    /*
     str2js: {
       'crossPlatformShapesNS': { 'markers.js': ['markers.svg']}
     },
+    //*/
     "git-describe": {
       build: {
         options: {
@@ -302,11 +242,11 @@ grunt.initConfig({
   grunt.registerTask('dev', 'Live Browserify', ['browserify:dev', 'concurrent:dev']);
 
   // build 
-  grunt.registerTask('build', ['sync', 'str2js', 'clean:build', 'git-describe', 'jshint:beforeconcat', 'concat', 'jshint:afterconcat', 'uglify', 'clean:demoLibs', 'copy', 'clean:tmp']);
+  grunt.registerTask('build', ['sync', 'clean:build', 'git-describe', 'jshint:beforeconcat', 'browserify:build', 'jshint:afterconcat', 'uglify', 'clean:demoLibs', 'copy']);
   //grunt.registerTask('build', ['sync', 'str2js', 'clean:build', 'git-describe', 'jshint:beforeconcat', 'concat', 'jshint:afterconcat', 'uglify', 'copy', 'clean:tmp']);
 
   // quick-build 
-  grunt.registerTask('quick-build', ['sync', 'str2js', 'clean:build', 'git-describe', 'concat', 'uglify', 'clean:demoLibs', 'copy', 'clean:tmp']);
+  grunt.registerTask('quick-build', ['sync', 'clean:build', 'git-describe', 'concat', 'uglify', 'clean:demoLibs', 'copy']);
 
   // test
   grunt.registerTask('test-min', 'Run local tests for development', function(val) {
