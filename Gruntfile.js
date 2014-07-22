@@ -1,5 +1,4 @@
-var tmp = require('temporary')
-  , fs = require('fs')
+var fs = require('fs')
   ;
 
 var presetShapeFileNames = fs.readdirSync('./lib/preset-shapes')
@@ -31,8 +30,6 @@ presetShapesFile =  presetShapeNameRequireString + presetShapesFile;
 fs.writeFileSync('./lib/preset-shapes/preset-shapes.js', presetShapesFile);
 
 var specFileName;
-
-var tmpDir = new tmp.Dir().path;
 
 module.exports = function(grunt) {
 
@@ -68,7 +65,6 @@ grunt.initConfig({
     pkg: packageJson,
     clean: {
       build: ['./dist/'],
-      //tmp: ['markers.js'],
       demoLibs: ['./demos/lib/'],
       index: ['./dist/index.html']
     },
@@ -243,7 +239,6 @@ grunt.initConfig({
 
   // build 
   grunt.registerTask('build', ['sync', 'clean:build', 'git-describe', 'jshint:beforeconcat', 'browserify:build', 'jshint:afterconcat', 'uglify', 'clean:demoLibs', 'copy']);
-  //grunt.registerTask('build', ['sync', 'str2js', 'clean:build', 'git-describe', 'jshint:beforeconcat', 'concat', 'jshint:afterconcat', 'uglify', 'copy', 'clean:tmp']);
 
   // quick-build 
   grunt.registerTask('quick-build', ['sync', 'clean:build', 'git-describe', 'concat', 'uglify', 'clean:demoLibs', 'copy']);
