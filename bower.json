@@ -2,6 +2,6 @@
   "name": "cross-platform-shapes",
   "version": "1.0.1",
   "main": [
-    "Gruntfile.js"
+    "index.js"
   ]
 }
