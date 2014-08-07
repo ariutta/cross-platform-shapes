@@ -1,33 +1,37 @@
 var fs = require('fs')
   ;
 
-var presetShapeFileNames = fs.readdirSync('./lib/preset-shapes')
-  .filter(function(fileName) {
-    // we only want the shapes, not the "class" definition file
-    return fileName.substring(fileName.length - 3) === '.js' && fileName.indexOf('preset-shapes') === -1;
-  })
-  .map(function(fileName) {
-    return fileName.replace('.js', '');
+// This function takes all the files from the preset shapes directory and requires them for this project. 
+// TODO make it possible to define "palettes" of different preset shapes, such as "pathways," "electrical circuits," etc.
+(function includePresetShapes() {
+  var presetShapeFileNames = fs.readdirSync('./lib/preset-shapes')
+    .filter(function(fileName) {
+      // we only want the shapes, not the "class" definition file
+      return fileName.substring(fileName.length - 3) === '.js' && fileName.indexOf('preset-shapes') === -1;
+    })
+    .map(function(fileName) {
+      return fileName.replace('.js', '');
+    });
+
+  var automaticShapeGenerationWarningString = '  // These shapes are automatically added to this file based on the contents of this directory. See Gruntfile.js.\n';
+
+  var presetShapeNameRequireString = 'var presetShapes = {\n';
+  presetShapeNameRequireString += automaticShapeGenerationWarningString;
+  presetShapeFileNames.forEach(function(presetShapeName) {
+    presetShapeNameRequireString += '  ' + presetShapeName + ': require(\'./' + presetShapeName + '\'),\n';
   });
 
-var automaticShapeGenerationWarningString = '  // These shapes are automatically added to this file based on the contents of this directory. See Gruntfile.js.\n';
+  var presetShapesFile = fs.readFileSync('./lib/preset-shapes/preset-shapes.js', {encoding: 'utf8'});
 
-var presetShapeNameRequireString = 'var presetShapes = {\n';
-presetShapeNameRequireString += automaticShapeGenerationWarningString;
-presetShapeFileNames.forEach(function(presetShapeName) {
-  presetShapeNameRequireString += '  ' + presetShapeName + ': require(\'./' + presetShapeName + '\'),\n';
-});
-
-var presetShapesFile = fs.readFileSync('./lib/preset-shapes/preset-shapes.js', {encoding: 'utf8'});
-
-// get rid of first line with module.exports
-presetShapesFile = presetShapesFile.replace(/^var\ presetShapes\ =\ {.*\n/, '');
-// get rid of warning so it isn't duplicated
-presetShapesFile = presetShapesFile.replace(automaticShapeGenerationWarningString, '');
-// get rid of old shape requires
-presetShapesFile = presetShapesFile.replace(/[^|\n].*((\w)*: ).*require\(.*\n/g, '');
-presetShapesFile =  presetShapeNameRequireString + presetShapesFile;
-fs.writeFileSync('./lib/preset-shapes/preset-shapes.js', presetShapesFile);
+  // get rid of first line with module.exports
+  presetShapesFile = presetShapesFile.replace(/^var\ presetShapes\ =\ {.*\n/, '');
+  // get rid of warning so it isn't duplicated
+  presetShapesFile = presetShapesFile.replace(automaticShapeGenerationWarningString, '');
+  // get rid of old shape requires
+  presetShapesFile = presetShapesFile.replace(/[^|\n].*((\w)*: ).*require\(.*\n/g, '');
+  presetShapesFile =  presetShapeNameRequireString + presetShapesFile;
+  fs.writeFileSync('./lib/preset-shapes/preset-shapes.js', presetShapesFile);
+})();
 
 var specFileName;
 
@@ -65,7 +69,6 @@ grunt.initConfig({
     pkg: packageJson,
     clean: {
       build: ['./dist/'],
-      demoLibs: ['./demos/lib/'],
       index: ['./dist/index.html']
     },
     uglify: {
@@ -104,8 +107,7 @@ grunt.initConfig({
       options: {
         jshintrc: '.jshintrc'
       },
-      beforeconcat: ['./index.js','./lib/**/*.js'],
-      afterconcat: [ 'dist/lib/cross-platform-shapes/js/cross-platform-shapes.min.js' ]
+      beforebuild: ['./index.js','./lib/**/*.js'],
     },
     /*
     str2js: {
@@ -189,17 +191,6 @@ grunt.initConfig({
           branch: 'build'
         }
       },
-    },
-    copy: {
-      index: {
-        src: ['./demos/index.html'],
-        dest: './dist/index.html',
-        options: {
-          process: function (content, srcpath) {
-            return content.replace(/\.\.\/dist\/lib/g,'./lib');
-          }
-        }
-      }
     }
   });
 
@@ -238,10 +229,7 @@ grunt.initConfig({
   grunt.registerTask('dev', 'Live Browserify', ['browserify:dev', 'concurrent:dev']);
 
   // build 
-  grunt.registerTask('build', ['sync', 'clean:build', 'git-describe', 'jshint:beforeconcat', 'browserify:build', 'jshint:afterconcat', 'uglify', 'clean:demoLibs', 'copy']);
-
-  // quick-build 
-  grunt.registerTask('quick-build', ['sync', 'clean:build', 'git-describe', 'concat', 'uglify', 'clean:demoLibs', 'copy']);
+  grunt.registerTask('build', ['sync', 'clean:build', 'git-describe', 'jshint:beforebuild', 'browserify:build', 'uglify']);
 
   // test
   grunt.registerTask('test-min', 'Run local tests for development', function(val) {
@@ -250,8 +238,8 @@ grunt.initConfig({
   });
 
   // Build, create and publish gh-pages
-  grunt.registerTask('build-pages', ['build', 'copy', 'buildcontrol:pages']);
-  //grunt.registerTask('build-pages', ['build', 'copy', 'replace:pages', 'buildcontrol:pages', 'clean:index']);
+  grunt.registerTask('build-pages', ['build', 'buildcontrol:pages']);
+  //grunt.registerTask('build-pages', ['build', 'replace:pages', 'buildcontrol:pages', 'clean:index']);
 
   grunt.registerTask('test', 'Run extensive local tests', function(val) {
     grunt.option('spec', val);

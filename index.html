@@ -10,7 +10,7 @@
     <div id="diagram-container">
       <div>
         <h3>Dark background</h3>
-        <svg id="my-svg1" version="1.1" baseProfile="full" xmlns="http://www.w3.org/1999/xlink" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" width="50%" height="60%" style="display:inline; background-color:black" preserveAspectRatio="xMidYMid" xlink="http://www.w3.org/1999/xlink" ev="http://www.w3.org/2001/xml-events">
+        <svg id="my-svg1" version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" width="600" height="430" style="display:inline; background-color:black" preserveAspectRatio="xMidYMid">
           <g>
             <desc>Demo for cross-platform-shapes library.</desc>
           </g>
@@ -28,30 +28,15 @@
         </svg>
 
         <h3>Light background</h3>
-        <svg id="my-svg2" version="1.1" baseProfile="full" xmlns="http://www.w3.org/1999/xlink" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" width="50%" height="25%" style="display:inline" preserveAspectRatio="xMidYMid" xlink="http://www.w3.org/1999/xlink" ev="http://www.w3.org/2001/xml-events">
-          <g>
-            <desc>Demo for cross-platform-shapes library.</desc>
-          </g>
-          <title>diagram</title>
-          <defs>
-            <linearGradient id="MyGradient">
-              <stop offset="0%" stop-color="red"></stop>
-              <stop offset="95%" stop-color="red"></stop>
-              <stop offset="95%" stop-opacity="1"></stop>
-              <stop offset="95%" stop-opacity="0"></stop>
-            </linearGradient>
-          </defs>
-          <g id="viewport">
-          </g>
-        </svg>
-        <canvas id="my-canvas" width="150" height="150"></canvas>
+        <div id="light-background-container">
+          </div>
       </div>
     </div>
   </div>
 </div>
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="../dist/lib/cross-platform-shapes/js/cross-platform-shapes.min.js"></script>
+<script src="./dist/lib/cross-platform-shapes/js/cross-platform-shapes.min.js"></script>
 
 <script>
   var crossPlatformShapesInstance1 = crossPlatformShapes.getInstance({
@@ -117,7 +102,7 @@
     rotation:45});
 
   var crossPlatformShapesInstance2 = crossPlatformShapes.getInstance({
-    targetSelector:'#my-svg2',
+    targetSelector:'#light-background-container',
     format: 'svg',
     width:600,
     height:600

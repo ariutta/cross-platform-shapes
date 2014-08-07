@@ -7,6 +7,7 @@ var util = require('util'),
     events = require('events');
 
 var DEFAULT_PORT = 8000;
+console.log('Server available at http://localhost:8000/')
 
 function main(argv) {
   new HttpServer({
