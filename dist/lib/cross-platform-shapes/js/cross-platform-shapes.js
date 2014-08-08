@@ -1510,7 +1510,7 @@ module.exports = {
       var markerId = crossPlatformShapesInstance.svg.marker.generateId(name, position, color);
       var markerAttributeValue = 'url(#' + markerId + ')';
       if (availableMarkers[markerId]) {
-        callback(markerAttributeValue);
+        return callback(markerAttributeValue);
       } else {
         var marker = d3.select(targetSvgDefs).append('marker')
         .attr('id', markerId)
@@ -1546,11 +1546,11 @@ module.exports = {
           });
         });
         availableMarkers[markerId] = true;
-        callback(markerAttributeValue);
+        return callback(markerAttributeValue);
       }
     } else {
       console.warn('Marker (arrowhead) named "' + name + '" is not available.');
-      callback('none');
+      return callback('none');
     }
   }
 };
@@ -1647,7 +1647,7 @@ module.exports = {
     });
 
     if (!!callback) {
-      callback(shapeSelection[0][0]);
+      return callback(shapeSelection[0][0]);
     } else {
       return shapeSelection[0][0];
     }
@@ -1689,34 +1689,44 @@ module.exports = {
       targetSvg.setAttribute('preserveAspectRatio', 'xMidYMid');
       targetSvg.setAttribute('width', width);
       targetSvg.setAttribute('height', height);
-
-      defs = document.createElementNS(svgNS, 'defs');
-      defs.setAttribute('id', 'defs');
-      targetSvg.appendChild(defs);
-
-      crossPlatformShapesInstance.targetSvg = targetSvg;
-      crossPlatformShapesInstance.targetSvgDefs = defs;
+      targetElement.appendChild(targetSvg);
 
       viewport = document.createElementNS(svgNS, 'g');
       viewport.setAttribute('id', 'viewport');
       targetSvg.appendChild(viewport);
 
-      targetElement.appendChild(targetSvg);
+      defs = document.createElementNS(svgNS, 'defs');
+      defs.setAttribute('id', 'defs');
+      viewport.appendChild(defs);
     } else {
       targetSvg = targetElement;
 
-      crossPlatformShapesInstance.targetSvg = targetSvg;
-      crossPlatformShapesInstance.targetSvgDefs = targetSvg.querySelector('defs');
+      viewport = targetSvg.querySelector('g#viewport');
 
-      viewport = targetSvg.querySelector('#viewport');
-
-      // TODO look at creating a new g element and putting all content into it here.
-      // instead of just selecting first available g element, as we are currently doing.
+      // TODO don't repeat this with the code already in the svg-pan-zoom library
+      // If no g container with id 'viewport' exists, create one
       if (!viewport) {
-        viewport = targetSvg.querySelector('g');
+        viewport = document.createElementNS(svgNS, 'g');
+        viewport.setAttribute('id', 'viewport');
+
+        // Internet Explorer (all versions?) can't use childNodes, but other browsers prefer (require?) using childNodes
+        var svgChildren = targetSvg.childNodes || targetSvg.children;
+        do {
+          viewport.appendChild(svgChildren[0]);
+        } while (svgChildren.length > 0);
+        targetSvg.appendChild(viewport);
+      }
+
+      defs = targetSvg.querySelector('defs');
+      if (!defs) {
+        defs = document.createElementNS(svgNS, 'defs');
+        defs.setAttribute('id', 'defs');
+        viewport.appendChild(defs);
       }
     }
 
+    crossPlatformShapesInstance.targetSvg = targetSvg;
+    crossPlatformShapesInstance.targetSvgDefs = defs;
     crossPlatformShapesInstance.availableMarkers = {};
     crossPlatformShapesInstance.backgroundColor = backgroundColor;
     targetSvg.setAttribute('style', 'background-color:' + backgroundColor + '; ');
