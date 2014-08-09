@@ -1515,7 +1515,7 @@ module.exports = {
         var marker = d3.select(targetSvgDefs).append('marker')
         .attr('id', markerId)
         .attr('orient', 'auto')
-        .attr('markerUnits', 'strokeWidth')
+        .attr('markerUnits', 'userSpaceOnUse')
         .attr('preserveAspectRatio', 'none')
         .attr('refY', markerData[name].markerElement.markerHeight/2)
         .attr('viewBox', '0 0 ' + markerData[name].markerElement.markerWidth + ' ' + markerData[name].markerElement.markerHeight);
