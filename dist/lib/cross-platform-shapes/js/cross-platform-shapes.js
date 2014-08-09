@@ -1582,7 +1582,12 @@ module.exports = {
       quadraticCurveTo: 'Q'
     };
 
-    var shapeSelection = d3.select(targetSvg).select(data.containerSelector).append('path');
+    var shapeSelection;
+    if (!!data.containerSelector) {
+      shapeSelection = d3.select(targetSvg).select(data.containerSelector).append('path');
+    } else {
+      shapeSelection = d3.select(targetSvg).append('path');
+    }
 
     var d = '';
     var pathSegments = crossPlatformShapesInstance.presetShapes[shapeName].getPathSegments(crossPlatformShapesInstance, data);
@@ -1656,82 +1661,83 @@ module.exports = {
 
 },{}],45:[function(require,module,exports){
 module.exports = {
-  getInstance: function(crossPlatformShapesInstance, args){
+  xmlNS: 'http://www.w3.org/XML/1998/namespace',
+  svgNS: 'http://www.w3.org/2000/svg',
+  xmlnsNS: 'http://www.w3.org/2000/xmlns/',
+  xlinkNS: 'http://www.w3.org/1999/xlink',
+  evNS: 'http://www.w3.org/2001/xml-events',
+  createOrGetSvg: function(crossPlatformShapesInstance, args) {
     var width = args.width || '100%'
       , height = args.height || '100%'
       , backgroundColor = args.backgroundColor || '#ffffff'
       , targetElement = args.targetElement
       , targetTagName = args.targetTagName
-      , xmlNS = 'http://www.w3.org/XML/1998/namespace'
-      , svgNS = 'http://www.w3.org/2000/svg'
-      , xmlnsNS = 'http://www.w3.org/2000/xmlns/'
-      , xlinkNS = 'http://www.w3.org/1999/xlink'
-      , evNS = 'http://www.w3.org/2001/xml-events'
       ;
 
-      crossPlatformShapesInstance.svgNS = svgNS;
-
-    var svgInstance = crossPlatformShapesInstance.svg;
-
-    var viewport, defs, targetSvg;
-    if (targetTagName !== 'svg') {
-      // var id = args.id || 'cross-platform-shape-svg';
-      // TODO look at using this for creating the id:
-      var id = args.id || 'svg-' + new Date().toISOString().replace(/\D/g, '');
-
-      targetSvg = document.createElementNS(svgNS, 'svg');
-      targetSvg.setAttribute('xmlns', svgNS);
-      targetSvg.setAttributeNS(xmlnsNS, 'xmlns:xlink', xlinkNS);
-      targetSvg.setAttributeNS(xmlnsNS, 'xmlns:ev', evNS);
-      targetSvg.setAttribute('id', id);
+    crossPlatformShapesInstance.backgroundColor = backgroundColor;
+    var targetSvg = (targetElement.tagName === 'svg' || targetElement.tagName === 'SVG') ? targetElement : targetElement.ownerSVGElement || !!targetElement.correspondingElement && targetElement.correspondingElement.ownerSVGElement;
+    if (!targetSvg) {
+      var svgId = args.id || 'svg-' + new Date().toISOString().replace(/\D/g, '');
+      targetSvg = document.createElementNS(this.svgNS, 'svg');
+      targetSvg.setAttributeNS(this.xmlnsNS, 'xmlns', this.svgNS);
+      targetSvg.setAttributeNS(this.xmlnsNS, 'xmlns:xlink', this.xlinkNS);
+      targetSvg.setAttributeNS(this.xmlnsNS, 'xmlns:ev', this.evNS);
+      targetSvg.setAttribute('id', svgId);
       targetSvg.setAttribute('version', '1.1');
       targetSvg.setAttribute('baseProfile', 'full');
       targetSvg.setAttribute('preserveAspectRatio', 'xMidYMid');
       targetSvg.setAttribute('width', width);
       targetSvg.setAttribute('height', height);
+      targetSvg.setAttribute('style', 'background-color:' + backgroundColor + '; ');
       targetElement.appendChild(targetSvg);
+    }
+    crossPlatformShapesInstance.targetSvg = targetSvg;
+    return targetSvg;
+  },
+  getOrCreateViewport: function(crossPlatformShapesInstance, targetSvg) {
+    var viewport = targetSvg.querySelector('g.viewport');
 
-      viewport = document.createElementNS(svgNS, 'g');
-      viewport.setAttribute('id', 'viewport');
-      targetSvg.appendChild(viewport);
+    // If no g element with class 'viewport' exists, create one
+    if (!viewport) {
+      var viewportId = 'viewport-' + new Date().toISOString().replace(/\D/g, '');
+      viewport = document.createElementNS(this.svgNS, 'g');
+      viewport.setAttribute('id', viewportId);
+      viewport.setAttribute('class', 'viewport');
 
-      defs = document.createElementNS(svgNS, 'defs');
-      defs.setAttribute('id', 'defs');
-      viewport.appendChild(defs);
-    } else {
-      targetSvg = targetElement;
-
-      viewport = targetSvg.querySelector('g#viewport');
-
-      // TODO don't repeat this with the code already in the svg-pan-zoom library
-      // If no g container with id 'viewport' exists, create one
-      if (!viewport) {
-        viewport = document.createElementNS(svgNS, 'g');
-        viewport.setAttribute('id', 'viewport');
-
-        // Internet Explorer (all versions?) can't use childNodes, but other browsers prefer (require?) using childNodes
-        var svgChildren = targetSvg.childNodes || targetSvg.children;
+      // Internet Explorer (all versions?) can't use childNodes, but other browsers prefer (require?) using childNodes
+      var targetSvgChildren = targetSvg.childNodes || targetSvg.children;
+      if (!!targetSvgChildren && targetSvgChildren.length > 0) {
         do {
-          viewport.appendChild(svgChildren[0]);
-        } while (svgChildren.length > 0);
-        targetSvg.appendChild(viewport);
+          viewport.appendChild(targetSvgChildren[0]);
+        } while (targetSvgChildren.length > 0);
       }
-
-      defs = targetSvg.querySelector('defs');
-      if (!defs) {
-        defs = document.createElementNS(svgNS, 'defs');
-        defs.setAttribute('id', 'defs');
-        viewport.appendChild(defs);
-      }
+      targetSvg.appendChild(viewport);
     }
 
-    crossPlatformShapesInstance.targetSvg = targetSvg;
+    return viewport;
+  },
+  createOrGetDefs: function(crossPlatformShapesInstance, targetSvg) {
+    var defs = targetSvg.querySelector('defs');
+    if (!defs) {
+      defs = document.createElementNS(this.svgNS, 'defs');
+      targetSvg.appendChild(defs);
+    }
     crossPlatformShapesInstance.targetSvgDefs = defs;
-    crossPlatformShapesInstance.availableMarkers = {};
-    crossPlatformShapesInstance.backgroundColor = backgroundColor;
-    targetSvg.setAttribute('style', 'background-color:' + backgroundColor + '; ');
+    return defs;
+  },
+  getInstance: function(crossPlatformShapesInstance, args){
+    var targetElement = args.targetElement
+      , targetTagName = args.targetTagName
+      ;
 
-    crossPlatformShapesInstance.viewport = viewport;
+    crossPlatformShapesInstance.svgNS = this.svgNS;
+    var svgInstance = crossPlatformShapesInstance.svg;
+
+    var targetSvg = this.createOrGetSvg(crossPlatformShapesInstance, args);
+    var viewport = this.createOrGetDefs(crossPlatformShapesInstance, targetSvg);
+    var defs = this.createOrGetDefs(crossPlatformShapesInstance, targetSvg);
+
+    crossPlatformShapesInstance.availableMarkers = {};
 
     return svgInstance;
   },
