@@ -1,6 +1,6 @@
 {
   "name": "cross-platform-shapes",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Create shapes with Canvas, SVG and possibly other formats in the future.",
   "main": "index.js",
   "directories": {},
